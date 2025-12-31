@@ -1,0 +1,14 @@
+<svg width="1280" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Mountain layer - mid background -->
+  <!-- Far mountain -->
+  <polygon points="100,400 300,200 500,400" fill="#6b7c93" opacity="0.6"/>
+  <polygon points="300,400 500,150 700,400" fill="#7a8ba0" opacity="0.7"/>
+  
+  <!-- Mid mountain -->
+  <polygon points="500,400 700,100 900,400" fill="#556b7f" opacity="0.8"/>
+  <polygon points="700,400 900,180 1100,400" fill="#6b7c93" opacity="0.75"/>
+  
+  <!-- Near mountain -->
+  <polygon points="0,400 200,250 400,400" fill="#4a5d6f" opacity="0.85"/>
+  <polygon points="900,400 1100,220 1280,400" fill="#4a5d6f" opacity="0.85"/>
+</svg>
