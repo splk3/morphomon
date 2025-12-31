@@ -25,5 +25,6 @@ jobs:
       
       - name: Import and validate project
         run: |
+          set -e
           godot --headless --import --quit
           echo "Project import and validation completed successfully"
