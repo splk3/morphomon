@@ -9,7 +9,7 @@ func _on_start_pressed():
 	# Change to the main game level
 	var err := get_tree().change_scene_to_file("res://scenes/level1.tscn")
 	if err != OK:
-		push_error("Failed to change scene to 'res://scenes/level1.tscn': %s" % [err])
+		push_error("Failed to change scene to 'res://scenes/level1.tscn': %d" % [err])
 
 func _on_quit_pressed():
 	# Quit the game
