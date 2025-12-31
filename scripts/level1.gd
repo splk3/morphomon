@@ -6,4 +6,4 @@ extends Node2D
 func _process(_delta):
 	# Make camera follow player position
 	if player and camera:
-		camera.position = player.position
+		camera.global_position = player.global_position
