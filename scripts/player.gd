@@ -7,10 +7,15 @@ const JUMP_VELOCITY = -400.0
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
-@onready var sprite = $Sprite2D
-@onready var animation_player = $AnimationPlayer
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var facing_right = true
+
+func _ready():
+	# Assert statements to catch configuration errors early during development
+	assert(sprite != null, "Sprite2D node not found! Check that the node hierarchy matches the expected structure.")
+	assert(animation_player != null, "AnimationPlayer node not found! Check that the node hierarchy matches the expected structure.")
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -27,10 +32,10 @@ func _physics_process(delta):
 	if direction != 0:
 		velocity.x = direction * SPEED
 		# Flip sprite based on direction
-		if direction > 0 and not facing_right:
+		if sprite and direction > 0 and not facing_right:
 			sprite.flip_h = false
 			facing_right = true
-		elif direction < 0 and facing_right:
+		elif sprite and direction < 0 and facing_right:
 			sprite.flip_h = true
 			facing_right = false
 	else:
@@ -42,6 +47,10 @@ func _physics_process(delta):
 	update_animation()
 
 func update_animation():
+	# Null check to handle potential missing AnimationPlayer node
+	if not animation_player:
+		return
+	
 	if not is_on_floor():
 		animation_player.play("jump")
 	elif abs(velocity.x) > 0:
