@@ -1,0 +1,35 @@
+<svg width="1280" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tree/forest silhouettes - near background -->
+  <!-- Trees in the distance -->
+  <g opacity="0.5" fill="#2d5016">
+    <!-- Tree 1 -->
+    <rect x="150" y="400" width="20" height="120" fill="#4a3520"/>
+    <polygon points="160,400 100,450 220,450"/>
+    <polygon points="160,430 110,470 210,470"/>
+    
+    <!-- Tree 2 -->
+    <rect x="400" y="380" width="25" height="140" fill="#4a3520"/>
+    <polygon points="412,380 340,440 484,440"/>
+    <polygon points="412,410 350,460 474,460"/>
+    
+    <!-- Tree 3 -->
+    <rect x="700" y="390" width="22" height="130" fill="#4a3520"/>
+    <polygon points="711,390 650,445 772,445"/>
+    <polygon points="711,420 660,465 762,465"/>
+    
+    <!-- Tree 4 -->
+    <rect x="1000" y="385" width="24" height="135" fill="#4a3520"/>
+    <polygon points="1012,385 945,442 1079,442"/>
+    <polygon points="1012,415 955,462 1069,462"/>
+  </g>
+  
+  <!-- Bushes/shrubs at bottom -->
+  <g opacity="0.7" fill="#3a6b1a">
+    <ellipse cx="100" cy="580" rx="80" ry="40"/>
+    <ellipse cx="300" cy="570" rx="100" ry="50"/>
+    <ellipse cx="550" cy="575" rx="90" ry="45"/>
+    <ellipse cx="800" cy="580" rx="110" ry="48"/>
+    <ellipse cx="1050" cy="570" rx="95" ry="42"/>
+    <ellipse cx="1200" cy="575" rx="85" ry="40"/>
+  </g>
+</svg>
