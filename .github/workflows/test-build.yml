@@ -1,0 +1,32 @@
+name: Test Build
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v1
+        with:
+          version: 4.2.2
+          use-dotnet: false
+      
+      - name: Verify Godot installation
+        run: godot --version
+      
+      - name: Import and validate project
+        run: |
+          set -e
+          godot --headless --import --quit
+          echo "Project import and validation completed successfully"
