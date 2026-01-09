@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://d0sxm1b2qfrwp"]
+[gd_scene load_steps=8 format=3 uid="uid://d0sxm1b2qfrwp"]
 
+[ext_resource type="Script" path="res://scripts/level1.gd" id="1_level1"]
 [ext_resource type="PackedScene" uid="uid://d1vf8qhqyosmc" path="res://scenes/player.tscn" id="1_player"]
 [ext_resource type="Texture2D" uid="uid://c7pn8yvbndxxx" path="res://backgrounds/sky.svg" id="2_sky"]
 [ext_resource type="Texture2D" uid="uid://dtqbhwmjx4cad" path="res://backgrounds/clouds_far.svg" id="3_clouds"]
@@ -21,6 +22,7 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_1")
 
 [node name="Level1" type="Node2D"]
+script = ExtResource("1_level1")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -63,5 +65,6 @@ layer_0/tile_data = PackedInt32Array(0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0
 [node name="Player" parent="." instance=ExtResource("1_player")]
 position = Vector2(150, 550)
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
