@@ -12,11 +12,6 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var facing_right = true
 
-func _ready():
-	# Assert statements to catch configuration errors early during development
-	assert(sprite != null, "Sprite2D node not found! Check that the node hierarchy matches the expected structure.")
-	assert(animation_player != null, "AnimationPlayer node not found! Check that the node hierarchy matches the expected structure.")
-
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
@@ -32,11 +27,13 @@ func _physics_process(delta):
 	if direction != 0:
 		velocity.x = direction * SPEED
 		# Flip sprite based on direction
-		if sprite and direction > 0 and not facing_right:
-			sprite.flip_h = false
+		if direction > 0 and not facing_right:
+			if sprite:
+				sprite.flip_h = false
 			facing_right = true
-		elif sprite and direction < 0 and facing_right:
-			sprite.flip_h = true
+		elif direction < 0 and facing_right:
+			if sprite:
+				sprite.flip_h = true
 			facing_right = false
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
