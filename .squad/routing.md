@@ -7,7 +7,10 @@ How to decide who handles what.
 | Work Type | Route To | Examples |
 |-----------|----------|---------|
 | Architecture, system design, decisions | Mal | How morphomon scanner should work, scene graph design, tech debt calls |
-| Code review, quality gates | Mal | Review GDScript PRs, check patterns, naming |
+| Code review, quality gates | Mal + Jayne | Mal reviews GDScript patterns; Jayne verifies builds and behavior |
+| Build validation & CI | Jayne | `godot --headless --import --quit`, PR gates, CI failures |
+| Gameplay mechanics testing | Jayne | Movement, jump, collision, physics regression |
+| Menu & UI verification | Jayne | Scene transitions, main menu, button states |
 | Scope & priorities | Mal | What to build next, cut decisions |
 | GDScript implementation | Kaylee | New scripts, refactors, bug fixes in `.gd` files |
 | Player mechanics & physics | Kaylee | Jump feel, movement tuning, collision |

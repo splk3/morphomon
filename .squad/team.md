@@ -15,6 +15,7 @@
 | Mal | Lead | `.squad/agents/mal/charter.md` | 🏗️ Active |
 | Kaylee | Game Dev | `.squad/agents/kaylee/charter.md` | 🎮 Active |
 | Wash | Level & Art | `.squad/agents/wash/charter.md` | 🎨 Active |
+| Jayne | Lead Game Tester | `.squad/agents/jayne/charter.md` | 🧪 Active |
 | River | Audio Designer | `.squad/agents/river/charter.md` | 🎵 Active |
 | Scribe | Session Logger | `.squad/agents/scribe/charter.md` | 📋 Silent |
 | Ralph | Work Monitor | `.squad/agents/ralph/charter.md` | 🔄 Monitor |
