@@ -12,7 +12,7 @@
 
 | Name | Role | Charter | Status |
 |------|------|---------|--------|
-| Mal | Lead | `.squad/agents/mal/charter.md` | 🏗️ Active |
+| Mal | Lead | `.squad/agents/mal/charter.md` | 🏗 Active |
 | Kaylee | Game Dev | `.squad/agents/kaylee/charter.md` | 🎮 Active |
 | Wash | Level & Art | `.squad/agents/wash/charter.md` | 🎨 Active |
 | Jayne | Lead Game Tester | `.squad/agents/jayne/charter.md` | 🧪 Active |
