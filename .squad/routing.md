@@ -20,6 +20,9 @@ How to decide who handles what.
 | UI & main menu | Wash | Menu layout, HUD, visual polish |
 | Music composition & SFX design | River | Chiptune tracks, sound effects, audio integration |
 | Audio format decisions & toolchain | River + Mal | River proposes, Mal signs off on direction |
+| Documentation & README | Inara | Project docs, developer guides, changelogs, inline comments |
+| Diagrams (Mermaid) | Book | Architecture, flowcharts, sequence diagrams, state machines |
+| Doc + diagram combo | Inara + Book | Inara writes prose, Book creates Mermaid diagrams |
 | Session logging | Scribe | Automatic — never needs routing |
 | Work queue & backlog | Ralph | GitHub issues, PR status, board monitoring |
 

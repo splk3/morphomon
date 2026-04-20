@@ -17,6 +17,8 @@
 | Wash | Level & Art | `.squad/agents/wash/charter.md` | 🎨 Active |
 | Jayne | Lead Game Tester | `.squad/agents/jayne/charter.md` | 🧪 Active |
 | River | Audio Designer | `.squad/agents/river/charter.md` | 🎵 Active |
+| Inara | Technical Writer | `.squad/agents/inara/charter.md` | 📝 Active |
+| Book | Diagram Specialist | `.squad/agents/book/charter.md` | 📐 Active |
 | Scribe | Session Logger | `.squad/agents/scribe/charter.md` | 📋 Silent |
 | Ralph | Work Monitor | `.squad/agents/ralph/charter.md` | 🔄 Monitor |
 
