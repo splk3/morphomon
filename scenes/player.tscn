@@ -1,6 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://d1vf8qhqyosmc"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/form_manager.gd" id="5_form_manager"]
+[ext_resource type="Script" path="res://scripts/human_form.gd" id="6_human_form"]
+[ext_resource type="Script" path="res://scripts/frog_form.gd" id="7_frog_form"]
+[ext_resource type="Script" path="res://scripts/scanner.gd" id="8_scanner"]
 [ext_resource type="Texture2D" uid="uid://b4yxmg5oo3rnr" path="res://sprites/player_idle.svg" id="2_idle"]
 [ext_resource type="Texture2D" uid="uid://c3nqlccf6ikmr" path="res://sprites/player_run.svg" id="3_run"]
 [ext_resource type="Texture2D" uid="uid://bhkqexykrkh3j" path="res://sprites/player_jump.svg" id="4_jump"]
@@ -78,3 +82,21 @@ shape = SubResource("RectangleShape2D_1")
 libraries = {
 "": SubResource("AnimationLibrary_1")
 }
+
+[node name="FormManager" type="Node" parent="."]
+script = ExtResource("5_form_manager")
+initial_form_path = NodePath("HumanForm")
+
+[node name="HumanForm" type="Node" parent="FormManager"]
+script = ExtResource("6_human_form")
+
+[node name="Scanner" type="RayCast2D" parent="."]
+target_position = Vector2(100, 0)
+collision_mask = 2
+collide_with_areas = true
+script = ExtResource("8_scanner")
+
+[node name="Beam" type="Line2D" parent="Scanner"]
+points = PackedVector2Array(0, 0, 100, 0)
+width = 2.0
+default_color = Color(0, 0.8, 1, 0.5)

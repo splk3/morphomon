@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8y4m5n7r2q1"]
+
+[ext_resource type="Script" path="res://scripts/scannable.gd" id="1_scannable"]
+[ext_resource type="Texture2D" uid="uid://bhkqexykrkh3j" path="res://sprites/player_jump.svg" id="2_frog_sprite"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(40, 40)
+
+[node name="FrogNPC" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 1, 0, 1)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_frog_sprite")
+
+[node name="ScannableArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_scannable")
+form_name = "FrogForm"
+form_script_path = "res://scripts/frog_form.gd"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScannableArea"]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="ProgressBar" type="ProgressBar" parent="ScannableArea"]
+offset_left = -30.0
+offset_top = -50.0
+offset_right = 30.0
+offset_bottom = -42.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="."]
+offset_left = -40.0
+offset_top = -60.0
+offset_right = 40.0
+offset_bottom = -34.0
+text = "SCANNABLE"
+horizontal_alignment = 1

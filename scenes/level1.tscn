@@ -7,6 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://bx6n2dqe5qnky" path="res://backgrounds/mountains.svg" id="4_mountains"]
 [ext_resource type="Texture2D" uid="uid://4m4xy2bhhfuk" path="res://backgrounds/trees.svg" id="5_trees"]
 [ext_resource type="Texture2D" uid="uid://b764kcrvl8qks" path="res://tilesets/ground_tile.svg" id="6_tile"]
+[ext_resource type="PackedScene" uid="uid://cb3q6y7u7v8w2" path="res://scenes/hud.tscn" id="7_hud"]
+[ext_resource type="PackedScene" uid="uid://b8y4m5n7r2q1" path="res://scenes/frog_npc.tscn" id="8_frog"]
+[ext_resource type="PackedScene" uid="uid://b1m6j5k2l8x0" path="res://scenes/bird_npc.tscn" id="9_bird"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1"]
 texture = ExtResource("6_tile")
@@ -23,6 +26,8 @@ sources/0 = SubResource("TileSetAtlasSource_1")
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_level1")
+
+[node name="HUD" parent="." instance=ExtResource("7_hud")]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -64,6 +69,12 @@ layer_0/tile_data = PackedInt32Array(0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 position = Vector2(150, 550)
+
+[node name="FrogNPC" parent="." instance=ExtResource("8_frog")]
+position = Vector2(500, 580)
+
+[node name="BirdNPC" parent="." instance=ExtResource("9_bird")]
+position = Vector2(800, 300)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.5, 1.5)

@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6mx8n3p2u8q1"]
+
+[ext_resource type="Script" path="res://scripts/level1.gd" id="1_mechanics_test"]
+[ext_resource type="PackedScene" uid="uid://d1vf8qhqyosmc" path="res://scenes/player.tscn" id="2_player"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1"]
+
+[node name="MechanicsTest" type="Node2D"]
+script = ExtResource("1_mechanics_test")
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(0, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("WorldBoundaryShape2D_1")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -2000.0
+offset_right = 2000.0
+offset_bottom = 100.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(0, 550)
+
+[node name="FrogNPC" parent="." instance=ExtResource("3_frog")]
+position = Vector2(400, 580)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+
+[node name="Label" type="Label" parent="."]
+offset_left = -100.0
+offset_top = 400.0
+offset_right = 100.0
+offset_bottom = 426.0
+text = "Mechanics Sandbox"
+horizontal_alignment = 1
+gnment = 1

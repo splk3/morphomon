@@ -1,0 +1,155 @@
+[gd_scene load_steps=2 format=3 uid="uid://cb3q6y7u7v8w2"]
+
+[sub_resource type="GDScript" id="GDScript_hud"]
+script/source = "extends CanvasLayer
+
+@onready var form_label = $Control/FormLabel
+@onready var animation_player = $AnimationPlayer
+@onready var dna_bank = $Control/DNABank
+@onready var grid = $Control/DNABank/MarginContainer/VBoxContainer/GridContainer
+
+var player_form_manager: FormManager = null
+
+func _ready():
+	update_form_display("Human")
+	if dna_bank:
+		dna_bank.visible = false
+
+func setup_connections(form_manager: FormManager):
+	player_form_manager = form_manager
+	player_form_manager.form_changed.connect(update_form_display)
+	player_form_manager.form_unlocked.connect(_on_form_unlocked)
+	refresh_dna_bank()
+
+func _input(event):
+	if event.is_action_pressed("inventory"):
+		dna_bank.visible = !dna_bank.visible
+		if dna_bank.visible:
+			refresh_dna_bank()
+
+func update_form_display(form_name: String):
+	if form_label:
+		form_label.text = "FORM: " + form_name.replace("Form", "").to_upper()
+		if animation_player:
+			animation_player.play("pulse")
+
+func _on_form_unlocked(_name: String):
+	refresh_dna_bank()
+
+func refresh_dna_bank():
+	if not grid or not player_form_manager:
+		return
+
+	# Clear existing buttons
+	for child in grid.get_children():
+		child.queue_free()
+
+	# Add buttons for all unlocked forms
+	for form in player_form_manager.get_children():
+		if form is BaseForm:
+			var btn = Button.new()
+			btn.text = form.name.replace("Form", "")
+			btn.custom_minimum_size = Vector2(80, 80)
+			btn.pressed.connect(_on_form_button_pressed.bind(form))
+			grid.add_child(btn)
+
+func _on_form_button_pressed(form: BaseForm):
+	if player_form_manager:
+		player_form_manager.switch_form(form)
+		dna_bank.visible = false
+
+"
+
+[sub_resource type="Animation" id="Animation_pulse"]
+resource_name = "pulse"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/FormLabel:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.5, 1.5), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/FormLabel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1"]
+_data = {
+"pulse": SubResource("Animation_pulse")
+}
+
+[node name="HUD" type="CanvasLayer"]
+script = SubResource("GDScript_hud")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="FormLabel" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 220.0
+offset_bottom = 46.0
+pivot_offset = Vector2(0, 13)
+text = "FORM: HUMAN"
+vertical_alignment = 1
+
+[node name="DNABank" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/DNABank"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/DNABank/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/DNABank/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "DNA BANK"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Control/DNABank/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_1")
+}
