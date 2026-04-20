@@ -15,6 +15,8 @@ How to decide who handles what.
 | Scene files & level layout | Wash | `.tscn` edits, TileMap platform placement |
 | Visual assets & parallax | Wash | SVG sprites, background layers, camera config |
 | UI & main menu | Wash | Menu layout, HUD, visual polish |
+| Music composition & SFX design | River | Chiptune tracks, sound effects, audio integration |
+| Audio format decisions & toolchain | River + Mal | River proposes, Mal signs off on direction |
 | Session logging | Scribe | Automatic — never needs routing |
 | Work queue & backlog | Ralph | GitHub issues, PR status, board monitoring |
 
