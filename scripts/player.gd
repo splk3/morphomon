@@ -10,8 +10,6 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-var facing_right = true
-
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
@@ -27,14 +25,8 @@ func _physics_process(delta):
 	if direction != 0:
 		velocity.x = direction * SPEED
 		# Flip sprite based on direction
-		if direction > 0 and not facing_right:
-			if sprite:
-				sprite.flip_h = false
-			facing_right = true
-		elif direction < 0 and facing_right:
-			if sprite:
-				sprite.flip_h = true
-			facing_right = false
+		if sprite:
+			sprite.flip_h = direction < 0
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
