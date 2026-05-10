@@ -13,7 +13,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var facing_right = true
 
 func _physics_process(delta):
-	var on_floor = is_on_floor()
+	var on_floor := is_on_floor()
 
 	# Add the gravity.
 	if not on_floor:
@@ -46,7 +46,7 @@ func _physics_process(delta):
 	on_floor = is_on_floor()
 	update_animation(on_floor)
 
-func update_animation(on_floor: bool):
+func update_animation(on_floor: bool = is_on_floor()):
 	# Null check to handle potential missing AnimationPlayer node
 	if not animation_player:
 		return
