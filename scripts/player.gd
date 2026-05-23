@@ -11,12 +11,14 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 func _physics_process(delta):
+	var on_floor := is_on_floor()
+
 	# Add the gravity.
-	if not is_on_floor():
+	if not on_floor:
 		velocity.y += gravity * delta
 
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and on_floor:
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
@@ -32,14 +34,15 @@ func _physics_process(delta):
 	move_and_slide()
 	
 	# Update animations
-	update_animation()
+	on_floor = is_on_floor()
+	update_animation(on_floor)
 
-func update_animation():
+func update_animation(on_floor: bool):
 	# Null check to handle potential missing AnimationPlayer node
 	if not animation_player:
 		return
 	
-	if not is_on_floor():
+	if not on_floor:
 		animation_player.play("jump")
 	elif abs(velocity.x) > 0:
 		animation_player.play("run")
