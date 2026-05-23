@@ -21,7 +21,7 @@ func test_gravity_setup():
 	var expected_gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 	assert_eq(_player.gravity, expected_gravity, "Player gravity should match project settings")
 
-func test_update_animation_handles_null_animation_player():
+func test_update_animation_handles_missing_animation_player():
 	# By default, animation_player is @onready and will be null when using .new()
 	# without adding to the SceneTree.
 	# We want to ensure calling update_animation doesn't crash when animation_player is null.

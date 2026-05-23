@@ -18,5 +18,5 @@ func assert_gt(actual, threshold, message := ""):
 
 func assert_almost_eq(actual: float, expected: float, tolerance: float, message := ""):
 	# Inclusive tolerance mirrors common testing frameworks and avoids flaky boundary failures.
-	# For small physics deltas in this project, tests typically use a 0.01 tolerance.
+	# For small physics deltas in this project, tests typically use small tolerances.
 	assert(abs(actual - expected) <= tolerance, message)
