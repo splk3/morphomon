@@ -25,8 +25,7 @@ func _physics_process(delta):
 	if direction != 0:
 		velocity.x = direction * SPEED
 		# Flip sprite based on direction
-		if sprite:
-			sprite.flip_h = direction < 0
+		sprite.flip_h = direction < 0
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
