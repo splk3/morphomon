@@ -28,7 +28,7 @@ func test_update_animation_does_not_crash_with_null_animation_player():
 
 func test_physics_process_applies_gravity():
 	# CharacterBody2D.is_on_floor() returns false by default for a new instance not in SceneTree.
-	_player.gravity = 980.0
+	_player.gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 	_player.velocity.y = 0.0
 	_player._physics_process(0.1)
-	assert_almost_eq(_player.velocity.y, 98.0, 0.01, "Vertical velocity should increase by gravity * delta")
+	assert_almost_eq(_player.velocity.y, _player.gravity * 0.1, 0.01, "Vertical velocity should increase by gravity * delta")
