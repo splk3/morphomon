@@ -17,4 +17,5 @@ func assert_gt(actual, threshold, message := ""):
 	assert(actual > threshold, message)
 
 func assert_almost_eq(actual: float, expected: float, tolerance: float, message := ""):
+	# Inclusive tolerance mirrors common testing frameworks and avoids flaky boundary failures.
 	assert(abs(actual - expected) <= tolerance, message)
