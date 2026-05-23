@@ -15,4 +15,4 @@ func assert_gt(actual, threshold, message := ""):
 	assert(actual > threshold, message)
 
 func assert_almost_eq(actual: float, expected: float, tolerance: float, message := ""):
-	assert(abs(actual - expected) <= tolerance, message)
+	assert(abs(actual - expected) < tolerance, message)
