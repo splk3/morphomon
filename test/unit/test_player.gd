@@ -1,4 +1,4 @@
-extends "res://test/support/gut_test.gd"
+extends GutTest
 
 const PlayerScript = preload("res://scripts/player.gd")
 const PHYSICS_FLOAT_TOLERANCE = 0.01
