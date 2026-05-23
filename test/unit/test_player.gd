@@ -1,6 +1,7 @@
 extends GutTest
 
 const PlayerScript = preload("res://scripts/player.gd")
+# 0.01 is sufficient for gravity * delta float math in these physics assertions.
 const PHYSICS_FLOAT_TOLERANCE = 0.01
 var _player = null
 
