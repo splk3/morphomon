@@ -46,7 +46,7 @@ func _physics_process(delta):
 	on_floor = is_on_floor()
 	update_animation(on_floor)
 
-func update_animation(on_floor: bool = is_on_floor()):
+func update_animation(on_floor: bool):
 	# Null check to handle potential missing AnimationPlayer node
 	if not animation_player:
 		return
