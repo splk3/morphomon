@@ -1,7 +1,7 @@
 extends "res://test/support/gut_test.gd"
 
 const PlayerScript = preload("res://scripts/player.gd")
-const FLOAT_TOLERANCE = 0.01
+const PHYSICS_FLOAT_TOLERANCE = 0.01
 var _player = null
 
 func before_each():
@@ -32,4 +32,4 @@ func test_physics_process_applies_gravity():
 	_player.gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 	_player.velocity.y = 0.0
 	_player._physics_process(0.1)
-	assert_almost_eq(_player.velocity.y, _player.gravity * 0.1, FLOAT_TOLERANCE, "Vertical velocity should increase by gravity * delta")
+	assert_almost_eq(_player.velocity.y, _player.gravity * 0.1, PHYSICS_FLOAT_TOLERANCE, "Vertical velocity should increase by gravity * delta")
