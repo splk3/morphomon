@@ -1,6 +1,6 @@
-extends GutTest
+extends "res://test/support/gut_test.gd"
 
-var PlayerScript = load("res://scripts/player.gd")
+const PlayerScript = preload("res://scripts/player.gd")
 var _player = null
 
 func before_each():
@@ -19,7 +19,7 @@ func test_gravity_setup():
 	var expected_gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 	assert_eq(_player.gravity, expected_gravity, "Player gravity should match project settings")
 
-func test_update_animation_handles_null_player():
+func test_update_animation_handles_null_animation_player():
 	# By default, animation_player is @onready and will be null when using .new()
 	# without adding to the SceneTree.
 	# We want to ensure calling update_animation doesn't crash when animation_player is null.
@@ -28,6 +28,7 @@ func test_update_animation_handles_null_player():
 
 func test_physics_process_applies_gravity():
 	# CharacterBody2D.is_on_floor() returns false by default for a new instance not in SceneTree.
-	_player.velocity.y = 0
+	_player.gravity = 980.0
+	_player.velocity.y = 0.0
 	_player._physics_process(0.1)
-	assert_gt(_player.velocity.y, 0.0, "Vertical velocity should increase due to gravity when not on floor")
+	assert_almost_eq(_player.velocity.y, 98.0, 0.01, "Vertical velocity should increase by gravity * delta")
