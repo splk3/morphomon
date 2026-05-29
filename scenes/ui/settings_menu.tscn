@@ -1,0 +1,147 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmorphosettings01"]
+
+[ext_resource type="Script" path="res://scripts/ui/settings_menu.gd" id="1_set"]
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_set")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.08, 0.1, 0.18, 1)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 16.0
+offset_right = 120.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 40
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="Panel" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = 80.0
+offset_right = -120.0
+offset_bottom = -40.0
+theme_override_constants/separation = 16
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Tabs" type="TabContainer" parent="Panel/Margin"]
+layout_mode = 2
+
+[node name="Graphics" type="VBoxContainer" parent="Panel/Margin/Tabs"]
+layout_mode = 2
+
+[node name="Grid" type="GridContainer" parent="Panel/Margin/Tabs/Graphics"]
+layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 18
+columns = 2
+
+[node name="ResLabel" type="Label" parent="Panel/Margin/Tabs/Graphics/Grid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Resolution"
+
+[node name="ResolutionOption" type="OptionButton" parent="Panel/Margin/Tabs/Graphics/Grid"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+
+[node name="FsLabel" type="Label" parent="Panel/Margin/Tabs/Graphics/Grid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Fullscreen"
+
+[node name="FullscreenCheck" type="CheckButton" parent="Panel/Margin/Tabs/Graphics/Grid"]
+layout_mode = 2
+
+[node name="Audio" type="VBoxContainer" parent="Panel/Margin/Tabs"]
+visible = false
+layout_mode = 2
+
+[node name="Grid" type="GridContainer" parent="Panel/Margin/Tabs/Audio"]
+layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 22
+columns = 2
+
+[node name="MasterLabel" type="Label" parent="Panel/Margin/Tabs/Audio/Grid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Master Volume"
+
+[node name="MasterSlider" type="HSlider" parent="Panel/Margin/Tabs/Audio/Grid"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="Panel/Margin/Tabs/Audio/Grid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="Panel/Margin/Tabs/Audio/Grid"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+
+[node name="SFXLabel" type="Label" parent="Panel/Margin/Tabs/Audio/Grid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "SFX Volume"
+
+[node name="SFXSlider" type="HSlider" parent="Panel/Margin/Tabs/Audio/Grid"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+
+[node name="Controls" type="VBoxContainer" parent="Panel/Margin/Tabs"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Hint" type="Label" parent="Panel/Margin/Tabs/Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Click a binding to remap it."
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/Margin/Tabs/Controls"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ControlsList" type="VBoxContainer" parent="Panel/Margin/Tabs/Controls/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Footer" type="HBoxContainer" parent="Panel"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 24
+
+[node name="BackButton" type="Button" parent="Panel/Footer"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Back"
+
+[node name="ResetButton" type="Button" parent="Panel/Footer"]
+custom_minimum_size = Vector2(220, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Reset Controls"

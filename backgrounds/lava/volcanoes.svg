@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <g>
+    <polygon points="95,572 290,300 500,572" fill="#2a2021"/>
+    <polygon points="235,572 420,238 650,572" fill="#20191b"/>
+    <polygon points="780,572 1000,260 1230,572" fill="#241b1d"/>
+    <polygon points="0,572 130,380 265,572" fill="#302326"/>
+    <polygon points="1140,572 1280,386 1280,572" fill="#302326"/>
+  </g>
+  <g fill="#120c0d" opacity="0.55">
+    <polygon points="420,238 650,572 505,462 465,525 380,330"/>
+    <polygon points="1000,260 1230,572 1080,458 1035,520 950,344"/>
+  </g>
+  <g fill="#ff7a18">
+    <rect x="386" y="236" width="72" height="16"/>
+    <rect x="962" y="258" width="76" height="16"/>
+    <rect x="264" y="298" width="52" height="14"/>
+  </g>
+  <g fill="#ffd15a">
+    <rect x="402" y="240" width="38" height="8"/>
+    <rect x="980" y="262" width="40" height="8"/>
+  </g>
+  <g fill="#ff4b1f">
+    <rect x="410" y="258" width="12" height="118"/>
+    <rect x="434" y="278" width="10" height="82"/>
+    <rect x="974" y="282" width="12" height="96"/>
+    <rect x="1012" y="276" width="10" height="132"/>
+    <rect x="282" y="318" width="10" height="72"/>
+  </g>
+  <g fill="#ffb237">
+    <rect x="350" y="178" width="10" height="10"/>
+    <rect x="392" y="142" width="8" height="8"/>
+    <rect x="474" y="170" width="10" height="10"/>
+    <rect x="925" y="190" width="10" height="10"/>
+    <rect x="1018" y="150" width="8" height="8"/>
+    <rect x="1072" y="205" width="10" height="10"/>
+  </g>
+</svg>

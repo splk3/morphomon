@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <path d="M0 548 H1280 V720 H0 Z" fill="#3b1010"/>
+  <path d="M0 570 H160 V548 H330 V566 H500 V542 H670 V562 H835 V548 H1000 V568 H1160 V550 H1280 V720 H0 Z" fill="#8f250f"/>
+  <path d="M0 622 H210 V598 H390 V620 H570 V592 H760 V614 H940 V596 H1110 V620 H1280 V720 H0 Z" fill="#e14b12"/>
+  <path d="M0 676 H170 V658 H350 V680 H530 V650 H730 V670 H910 V654 H1090 V678 H1280 V720 H0 Z" fill="#ff8f1f"/>
+  <g fill="#ffd75a" opacity="0.92">
+    <rect x="60" y="610" width="135" height="6"/>
+    <rect x="348" y="578" width="150" height="6"/>
+    <rect x="640" y="632" width="170" height="6"/>
+    <rect x="965" y="592" width="150" height="6"/>
+    <rect x="0" y="660" width="90" height="6"/>
+    <rect x="1210" y="660" width="70" height="6"/>
+    <rect x="130" y="632" width="22" height="8"/>
+    <rect x="300" y="592" width="38" height="10"/>
+    <rect x="510" y="660" width="46" height="8"/>
+    <rect x="706" y="600" width="30" height="10"/>
+    <rect x="910" y="650" width="42" height="8"/>
+    <rect x="1095" y="610" width="34" height="10"/>
+    <rect x="1230" y="684" width="30" height="8"/>
+  </g>
+  <g fill="#2a0b0b" opacity="0.8">
+    <rect x="0" y="548" width="92" height="16"/>
+    <rect x="210" y="548" width="70" height="12"/>
+    <rect x="738" y="548" width="74" height="12"/>
+    <rect x="1186" y="548" width="94" height="16"/>
+  </g>
+</svg>
