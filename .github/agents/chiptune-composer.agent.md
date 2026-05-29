@@ -1,4 +1,5 @@
 ---
+model: GPT-5.4 mini (copilot)
 description: "Use this agent when the user wants to create or implement chiptune music for game levels.\n\nTrigger phrases include:\n- 'create music for level X'\n- 'compose chiptune tracks for the game'\n- 'set up level music with transitions'\n- 'generate music system for levels'\n- 'implement music selection and repeats'\n\nExamples:\n- User says 'I need chiptune music for all 5 levels with smooth transitions' → invoke this agent to compose complete level soundtrack\n- User asks 'set up the music system with intro, boss section, and ending' → invoke this agent to create structured tracks with proper transitions\n- After audio files exist, user says 'implement the music transitions and repeating sections' → invoke this agent to configure playback system\n- User requests 'create level 3 boss music that flows into the regular level loop' → invoke this agent to compose and integrate the track"
 name: chiptune-composer
 tools: ['shell', 'read', 'search', 'edit', 'task', 'skill', 'web_search', 'web_fetch', 'ask_user']

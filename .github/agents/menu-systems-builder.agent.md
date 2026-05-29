@@ -1,4 +1,5 @@
 ---
+model: Gemini 3 Flash (copilot)
 description: "Use this agent when the user asks to create, build, or implement menus and settings in the game.\n\nTrigger phrases include:\n- 'create the main menu'\n- 'build the menu system'\n- 'implement the settings menu'\n- 'add menu navigation'\n- 'create a pause menu'\n- 'design the options/settings UI'\n- 'set up audio/graphics/control settings'\n- 'implement menu transitions'\n- 'add a settings panel for [feature]'\n\nExamples:\n- User says 'I need a main menu with level select and settings options' → invoke this agent to architect and implement the complete menu system\n- User asks 'can you build a pause menu that shows resume, settings, and quit buttons?' → invoke this agent to create the pause menu UI and functionality\n- User requests 'add a settings menu with graphics, audio, and control remapping options' → invoke this agent to implement the settings system with persistence\n- After game features are added, user says 'the settings menu needs an option to control this feature' → invoke this agent to integrate settings for that feature"
 name: menu-systems-builder
 ---

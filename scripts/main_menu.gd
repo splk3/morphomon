@@ -1,7 +1,8 @@
 extends Control
 ## Main menu: an energetic, auto-scrolling beach-at-sunset parallax scene with
-## Morphomon racing along a coastal road, looping chiptune music, and Start /
-## Settings / Quit options. Backgrounds scroll continuously to convey motion.
+## Morphomon racing along a coastal road, looping chiptune music, and New Game /
+## Load Game / Settings / Quit options. Backgrounds scroll continuously to convey
+## motion.
 ##
 ## Depth is layered back-to-front. The horizon (where water meets sky) is the
 ## farthest point, so its layers scroll slowest; layers get faster toward the
@@ -23,12 +24,12 @@ const LAYERS := [
 	{"tex": "clouds_far.svg", "speed": 9.0},    # 2  tiny high clouds
 	{"tex": "clouds.svg", "speed": 18.0},       # 3  mid clouds
 	{"tex": "clouds_near.svg", "speed": 30.0},  # 4  big low clouds (nearest sky)
-	# --- WATER (5 layers): horizon slowest, near-shore surf fastest ---
-	{"tex": "water_horizon.svg", "speed": 5.0}, # 5  shimmer at the horizon (farthest)
-	{"tex": "ocean.svg", "speed": 18.0},        # 6  base water body
-	{"tex": "water_far.svg", "speed": 40.0},    # 7  mid ripples
-	{"tex": "waves.svg", "speed": 90.0},        # 8  swell
-	{"tex": "water_near.svg", "speed": 150.0},  # 9  near-shore surf (nearest water)
+	# --- WATER ---
+	{"tex": "ocean.svg", "speed": 18.0},        # 5  base water body
+	{"tex": "water_far.svg", "speed": 40.0},    # 6  mid ripples
+	{"tex": "waves.svg", "speed": 90.0},        # 7  swell
+	{"tex": "water_near.svg", "speed": 150.0},  # 8  near-shore surf (nearest moving water)
+	{"tex": "water_horizon.svg", "speed": 0.0}, # 9  static sun reflections overlay the moving water
 	# --- LAND ---
 	{"tex": "palms_far.svg", "speed": 60.0},    # 10 distant palms
 	{"tex": "road.svg", "speed": 240.0},        # 11 road + sea wall
@@ -56,10 +57,11 @@ func _ready() -> void:
 	_build_background()
 	_build_morphomon()
 	_build_dust()
-	$Menu/VBox/StartButton.pressed.connect(_on_start)
+	$Menu/VBox/NewGameButton.pressed.connect(_on_new_game)
+	$Menu/VBox/LoadGameButton.pressed.connect(_on_load_game)
 	$Menu/VBox/SettingsButton.pressed.connect(_on_settings)
 	$Menu/VBox/QuitButton.pressed.connect(_on_quit)
-	$Menu/VBox/StartButton.grab_focus()
+	$Menu/VBox/NewGameButton.grab_focus()
 	AudioManager.play_music("menu_theme")
 
 
@@ -150,16 +152,6 @@ func _build_morphomon() -> void:
 	_morph.z_index = _morph_z
 	$Parallax.add_child(_morph)
 
-	# A small occluder so Morphomon casts its own moving sun shadow.
-	var occ := LightOccluder2D.new()
-	var poly := OccluderPolygon2D.new()
-	poly.polygon = PackedVector2Array([
-		Vector2(-18, -26), Vector2(18, -26), Vector2(18, 22), Vector2(-18, 22),
-	])
-	occ.occluder = poly
-	_morph.add_child(occ)
-
-
 ## Semi-transparent dust kicked up behind Morphomon's treads, drifting backward.
 func _build_dust() -> void:
 	_dust = CPUParticles2D.new()
@@ -236,13 +228,16 @@ func _process(delta: float) -> void:
 		_position_dust()
 
 
-func _on_start() -> void:
+func _on_new_game() -> void:
 	AudioManager.play_sfx("confirm")
-	# The intro cruise level always plays first; after it, the level select opens.
-	if GameState.is_complete("cruise"):
-		get_tree().change_scene_to_file("res://scenes/ui/level_select.tscn")
-	else:
-		GameState.go_to_level("cruise")
+	GameState.set_meta("save_slot_mode", "new")
+	get_tree().change_scene_to_file("res://scenes/ui/save_slot_select.tscn")
+
+
+func _on_load_game() -> void:
+	AudioManager.play_sfx("confirm")
+	GameState.set_meta("save_slot_mode", "load")
+	get_tree().change_scene_to_file("res://scenes/ui/save_slot_select.tscn")
 
 
 func _on_settings() -> void:

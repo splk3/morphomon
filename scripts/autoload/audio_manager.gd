@@ -8,6 +8,8 @@ extends Node
 const MUSIC_DIR := "res://assets/music/"
 const SFX_DIR := "res://assets/sfx/"
 const SFX_VOICES := 8
+const MUSIC_EXTENSIONS: Array[String] = [".ogg", ".wav"]
+const SFX_EXTENSIONS: Array[String] = [".wav", ".ogg"]
 
 ## Per-track loop-begin point in SECONDS. Each level theme is generated as a
 ## one-shot INTRO followed by the looping MIDDLE body (see tools/generate_music.py).
@@ -22,6 +24,9 @@ const MUSIC_LOOP_BEGIN := {
 	"island_theme": 13.7143,
 	"jungle_theme": 15.0000,
 	"pirate_theme": 13.3333,
+	"ocean_floor_theme": 15.0000,
+	"space_theme": 12.3077,
+	"factory_theme": 13.5211,
 	"boss_theme": 10.9091,
 	"credits_theme": 13.9130,
 	"victory_theme": 0.0,
@@ -50,12 +55,12 @@ func _ready() -> void:
 func _load_stream(dir: String, key: String, cache: Dictionary) -> AudioStream:
 	if cache.has(key):
 		return cache[key]
-	var path := dir + key + ".wav"
+	var path := _resolve_path(dir, key)
 	if not ResourceLoader.exists(path):
 		return null
 	var stream: AudioStream = load(path)
-	# Imported WAVs default to no looping; force music to loop seamlessly.
-	if stream is AudioStreamWAV and dir == MUSIC_DIR:
+	# Force music assets to loop seamlessly regardless of container format.
+	if dir == MUSIC_DIR and stream is AudioStreamWAV:
 		stream = stream.duplicate()
 		var total_frames := int(stream.data.size() / 2)  # 16-bit mono -> 2 bytes/frame
 		stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
@@ -65,8 +70,22 @@ func _load_stream(dir: String, key: String, cache: Dictionary) -> AudioStream:
 		var begin := int(loop_sec * stream.mix_rate)
 		stream.loop_begin = clampi(begin, 0, total_frames - 1)
 		stream.loop_end = total_frames
+	elif dir == MUSIC_DIR and stream is AudioStreamOggVorbis:
+		stream = stream.duplicate()
+		var loop_sec: float = MUSIC_LOOP_BEGIN.get(key, 0.0)
+		stream.loop = true
+		stream.loop_offset = maxf(loop_sec, 0.0)
 	cache[key] = stream
 	return stream
+
+
+func _resolve_path(dir: String, key: String) -> String:
+	var exts: Array[String] = MUSIC_EXTENSIONS if dir == MUSIC_DIR else SFX_EXTENSIONS
+	for ext: String in exts:
+		var candidate: String = dir + key + ext
+		if ResourceLoader.exists(candidate):
+			return candidate
+	return dir + key + ".wav"
 
 
 func play_music(key: String) -> void:

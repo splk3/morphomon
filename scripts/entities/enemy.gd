@@ -7,6 +7,7 @@ extends CharacterBody2D
 @export var health := 2
 @export var contact_damage := 1
 @export var texture_path := "res://sprites/enemies/drone.svg"
+@export var death_sfx := "explosion"
 
 var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var _origin_x := 0.0
@@ -56,5 +57,5 @@ func take_damage(amount: int) -> void:
 	if health <= 0:
 		var mgr := get_tree().root.get_node_or_null("AudioManager")
 		if mgr:
-			mgr.play_sfx("explosion")
+			mgr.play_sfx(death_sfx)
 		queue_free()

@@ -1,4 +1,5 @@
 ---
+model: GPT-5.4 mini (copilot)
 description: "Use this agent for verification, regression checks, and test/validation updates in the Godot project.\n\nTrigger phrases include:\n- 'run regression checks'\n- 'validate this branch'\n- 'add tests for this behavior'\n- 'investigate runtime regressions'\n- 'verify scenes/resources still load'\n- 'tighten CI reliability'\n\nExamples:\n- User says 'before merging, run a full regression pass and report issues' → invoke this agent to run project validations and summarize actionable failures\n- User asks 'add tests for level progression and pause behavior' → invoke this agent to create/update GUT tests and supporting harness code\n- User requests 'CI passed but gameplay broke after scene changes; find why' → invoke this agent to reproduce and isolate scene/resource/runtime regressions"
 name: qa-regression-runner
 ---

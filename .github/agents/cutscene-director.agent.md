@@ -1,4 +1,5 @@
 ---
+model: Claude Sonnet 4.6 (copilot)
 description: "Use this agent when the user wants to create, implement, or manage cutscenes, dialogue sequences, or credits scenes.\n\nTrigger phrases include:\n- 'create a cutscene for...'\n- 'implement dialogue/story sequence'\n- 'design the credits scene'\n- 'set up scene transitions'\n- 'create cutscene animations'\n- 'implement dialogue system'\n- 'choreograph the opening scene'\n\nExamples:\n- User says 'I need a cutscene where the boss transforms and then attacks' → invoke this agent to architect the scene flow, animation sequence, and transitions\n- User requests 'implement a dialogue system with character portraits and text progression' → invoke this agent to create the dialogue framework and integrate visual elements\n- After creating graphics, user says 'now set up the credits roll with music and transitions' → invoke this agent to orchestrate timing and implement the credits sequence\n- User asks 'the opening needs a dramatic reveal animation followed by dialogue' → invoke this agent to coordinate animations and dialogue timing"
 name: cutscene-director
 ---

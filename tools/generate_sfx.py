@@ -80,6 +80,18 @@ def main():
                         square_sweep(220, 900, 0.20, duty=0.25) * 0.35))
     # laser_charge: rising charge swell for the eagle laser winding up.
     write("laser_charge", laser_charge(0.55))
+    # New stage enemy/event SFX:
+    # puffer_pop: quick bubbly pop for abyss pufferfish bots.
+    write("puffer_pop", layer(noise_burst(0.09, 28) * 0.25,
+                              square_sweep(280, 110, 0.11, duty=0.2) * 0.45))
+    # ufo_blast: bright sci-fi burst for space drones.
+    write("ufo_blast", layer(square_sweep(1500, 520, 0.14, duty=0.125) * 0.55,
+                             square_sweep(900, 1400, 0.08, duty=0.5) * 0.3,
+                             noise_burst(0.08, 20) * 0.2))
+    # gear_break: metallic clank-snap for factory hoppers.
+    write("gear_break", layer(square_sweep(420, 180, 0.16, duty=0.35) * 0.45,
+                              square_sweep(820, 260, 0.13, duty=0.25) * 0.35,
+                              noise_burst(0.12, 16) * 0.25))
 
 
 def laser_charge(dur, f0=260, f1=1500, duty=0.125):

@@ -1,4 +1,5 @@
 ---
+model: Claude Sonnet 4.6 (copilot)
 description: "Use this agent when the user asks to implement or debug gameplay logic, behaviors, and mechanics.\n\nTrigger phrases include:\n- 'implement morphomon behavior'\n- 'create enemy/boss logic for level X'\n- 'set up level-specific mechanics'\n- 'add morphomon ability or attack'\n- 'implement level progression logic'\n- 'fix gameplay behavior issue'\n- 'integrate music/sound/graphics into gameplay'\n- 'how should enemies behave when...'\n\nExamples:\n- User says 'implement the boss behavior for level 3 - it should spawn minions and charge attacks' → invoke this agent to architect the complete boss state machine, spawning system, and attack patterns\n- User asks 'add the morph ability to morphomon - it should transform based on collected elements' → invoke this agent to implement state tracking, visual transitions, and ability mechanics\n- After creating audio files, user says 'integrate the level music and sound effects into gameplay, with boss music triggering on encounter' → invoke this agent to manage audio resources and trigger them appropriately during gameplay"
 name: gameplay-mechanics-engine
 ---

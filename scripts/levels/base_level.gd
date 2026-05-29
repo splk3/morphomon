@@ -180,11 +180,13 @@ func _build_camera() -> void:
 # --- Entities -----------------------------------------------------------
 func _build_entities() -> void:
 	var enemy_texture := _enemy_texture_for_theme()
+	var enemy_sfx := _enemy_sfx_for_theme()
 	var enemy_spots := [700.0, 1250.0, 1800.0, 2400.0, 2950.0, 3500.0, 3900.0]
 	for x in enemy_spots:
 		var enemy := EnemyScene.instantiate()
 		enemy.position = Vector2(x, GROUND_Y - 30)
 		enemy.texture_path = enemy_texture
+		enemy.death_sfx = enemy_sfx
 		add_child(enemy)
 
 	# Rescue animal at the midpoint for levels that grant a form.
@@ -208,7 +210,18 @@ func _enemy_texture_for_theme() -> String:
 		"ice": return "res://sprites/enemies/snowball.svg"
 		"cruise", "island", "pirate": return "res://sprites/enemies/crab.svg"
 		"jungle": return "res://sprites/enemies/bat.svg"
+		"ocean_floor": return "res://sprites/enemies/ocean_floor_enemy.svg"
+		"space": return "res://sprites/enemies/space_enemy.svg"
+		"factory": return "res://sprites/enemies/factory_enemy.svg"
 		_: return "res://sprites/enemies/drone.svg"
+
+
+func _enemy_sfx_for_theme() -> String:
+	match String(level_data.get("theme", "")):
+		"ocean_floor": return "puffer_pop"
+		"space": return "ufo_blast"
+		"factory": return "gear_break"
+		_: return "explosion"
 
 
 func _make_pickup(tex: String) -> Area2D:
@@ -609,4 +622,3 @@ func _update_lights(_delta: float) -> void:
 	# Player drop-shadow tracks the player along the ground.
 	if _player_shadow and _player:
 		_player_shadow.global_position = Vector2(_player.global_position.x + 12, GROUND_Y + 6)
-

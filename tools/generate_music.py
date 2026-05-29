@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Procedural chiptune generator for Morphomon.
 
-Generates short, seamlessly looping WAV tracks (one per game theme) using
+Generates short, seamlessly looping chiptune tracks (one per game theme) using
 classic 8-bit waveforms: pulse/square lead, triangle bass, and a noise
-percussion channel. Output is written to ``assets/music/`` as 16-bit mono
-WAV files that Godot imports natively.
+percussion channel. Output is written to ``assets/music/`` as OGG Vorbis when
+GStreamer is available, with deterministic WAV fallback otherwise.
 
 Run from the repository root:
 
@@ -15,13 +15,16 @@ Requires only ``numpy`` (already used by the project tooling).
 """
 
 import os
+import shutil
 import struct
+import subprocess
 import wave
 
 import numpy as np
 
 SAMPLE_RATE = 22050
 OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "assets", "music")
+PREFER_OGG = True
 
 # Note name -> frequency (Hz). Equal temperament, A4 = 440.
 _NOTE_SEMITONES = {"C": -9, "D": -7, "E": -5, "F": -4, "G": -2, "A": 0, "B": 2}
@@ -148,8 +151,7 @@ def mix(channels):
     return out / peak * 0.85
 
 
-def write_wav(name, samples):
-    path = os.path.join(OUT_DIR, name + ".wav")
+def write_wav(path, samples):
     data = np.clip(samples, -1.0, 1.0)
     data16 = (data * 32767).astype(np.int16)
     with wave.open(path, "w") as w:
@@ -158,6 +160,40 @@ def write_wav(name, samples):
         w.setframerate(SAMPLE_RATE)
         w.writeframes(b"".join(struct.pack("<h", s) for s in data16))
     print("wrote", path, "(%.1f KB)" % (os.path.getsize(path) / 1024))
+
+
+def _wav_to_ogg(wav_path, ogg_path):
+    if shutil.which("gst-launch-1.0") is None:
+        return False
+    cmd = [
+        "gst-launch-1.0",
+        "-q",
+        "filesrc", f"location={wav_path}",
+        "!", "wavparse",
+        "!", "audioconvert",
+        "!", "audioresample",
+        "!", "vorbisenc", "quality=0.4",
+        "!", "oggmux",
+        "!", "filesink", f"location={ogg_path}",
+    ]
+    try:
+        subprocess.run(cmd, check=True)
+    except (OSError, subprocess.CalledProcessError):
+        return False
+    return os.path.exists(ogg_path)
+
+
+def write_track(name, samples):
+    wav_path = os.path.join(OUT_DIR, name + ".wav")
+    write_wav(wav_path, samples)
+    if not PREFER_OGG:
+        return
+    ogg_path = os.path.join(OUT_DIR, name + ".ogg")
+    if _wav_to_ogg(wav_path, ogg_path):
+        os.remove(wav_path)
+        print("wrote", ogg_path, "(%.1f KB)" % (os.path.getsize(ogg_path) / 1024))
+    else:
+        print("warning: OGG conversion unavailable, kept WAV for", name)
 
 
 def lead(seq):
@@ -263,6 +299,45 @@ def song_pirate():
     return bpm, melody, bass, drums, 0.5
 
 
+def song_ocean_floor():
+    bpm = 128
+    melody = lead([
+        ("Fs5", .5), ("A5", .5), ("Cs6", 1), ("A5", .5), ("Fs5", .5), ("E5", 1),
+        ("Fs5", .5), ("A5", .5), ("B5", 1), ("A5", .5), ("Fs5", .5), ("E5", 1),
+        ("D5", .5), ("Fs5", .5), ("A5", 1), ("Fs5", .5), ("E5", .5), ("Cs5", 1),
+        ("E5", .5), ("Fs5", .5), ("A5", 1), ("B5", .5), ("A5", .5), ("Fs5", 1),
+    ])
+    bass = lead([("Fs2", 1), ("Cs3", 1), ("D2", 1), ("E2", 1)] * 6)
+    drums = [("K", .5), ("H", .5), ("S", .5), ("H", .5)] * 12
+    return bpm, melody, bass, drums, 0.25
+
+
+def song_space():
+    bpm = 156
+    melody = lead([
+        ("B5", .5), ("Fs5", .5), ("D6", .5), ("Cs6", .5), ("B5", 1), ("Fs5", 1),
+        ("A5", .5), ("E6", .5), ("Cs6", .5), ("B5", .5), ("A5", 1), ("E5", 1),
+        ("Gs5", .5), ("B5", .5), ("D6", .5), ("E6", .5), ("Fs6", 1), ("D6", 1),
+        ("Cs6", .5), ("B5", .5), ("A5", .5), ("Fs5", .5), ("E5", 1), ("B4", 1),
+    ])
+    bass = lead([("B2", .5), ("Fs2", .5), ("E2", .5), ("Fs2", .5)] * 12)
+    drums = [("K", .25), ("H", .25), ("S", .5), ("H", .25), ("K", .25), ("H", .5)] * 8
+    return bpm, melody, bass, drums, 0.125
+
+
+def song_factory():
+    bpm = 142
+    melody = lead([
+        ("Cs5", .5), ("E5", .5), ("Gs5", .5), ("E5", .5), ("Cs5", .5), ("B4", .5), ("Gs4", 1),
+        ("Cs5", .5), ("Ds5", .5), ("Fs5", .5), ("Ds5", .5), ("Cs5", .5), ("B4", .5), ("Gs4", 1),
+        ("A4", .5), ("Cs5", .5), ("E5", .5), ("Cs5", .5), ("A4", .5), ("Gs4", .5), ("Fs4", 1),
+        ("B4", .5), ("Ds5", .5), ("Fs5", .5), ("Gs5", .5), ("Fs5", .5), ("Ds5", .5), ("Cs5", 1),
+    ])
+    bass = lead([("Cs2", .5), ("Cs2", .5), ("Gs1", .5), ("A1", .5)] * 14)
+    drums = [("K", .5), ("S", .25), ("H", .25), ("K", .25), ("H", .25), ("S", .5)] * 9
+    return bpm, melody, bass, drums, 0.5
+
+
 def song_boss():
     bpm = 176
     melody = lead([
@@ -315,6 +390,9 @@ TRANSPOSE = {
     "island_theme": 2,    # D center  (breezy tropical)
     "jungle_theme": 4,    # E center  (rhythmic)
     "pirate_theme": 2,    # D center  (swashbuckling)
+    "ocean_floor_theme": 6,  # Fs center (submerged, mysterious)
+    "space_theme": 11,    # B center  (sci-fi, weightless)
+    "factory_theme": 1,   # Cs center (mechanical, tense)
     "boss_theme": 0,      # C minor   (tense, epic)
     "credits_theme": 0,   # C major   (triumphant/reflective)
     "victory_theme": 7,   # G major   (celebratory fanfare)
@@ -342,6 +420,9 @@ SONGS = {
     "island_theme": song_island,
     "jungle_theme": song_jungle,
     "pirate_theme": song_pirate,
+    "ocean_floor_theme": song_ocean_floor,
+    "space_theme": song_space,
+    "factory_theme": song_factory,
     "boss_theme": song_boss,
     "credits_theme": song_credits,
     "victory_theme": song_victory,
@@ -351,7 +432,8 @@ SONGS = {
 # is meant to play through once, so it loops from the top like a stinger.
 INTRO_TRACKS = {
     "menu_theme", "cruise_theme", "ice_theme", "lava_theme", "island_theme",
-    "jungle_theme", "pirate_theme", "boss_theme", "credits_theme",
+    "jungle_theme", "pirate_theme", "ocean_floor_theme", "space_theme",
+    "factory_theme", "boss_theme", "credits_theme",
 }
 
 
@@ -385,7 +467,7 @@ def build(name, fn):
     bass_ch = np.concatenate([s[1] for s in sections])
     drum_ch = np.concatenate([s[2] for s in sections])
     out = mix([lead_ch, bass_ch, drum_ch])
-    write_wav(name, out)
+    write_track(name, out)
 
     loop_begin_sec = loop_begin_samples / float(SAMPLE_RATE)
     return loop_begin_sec

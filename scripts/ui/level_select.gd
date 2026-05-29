@@ -1,5 +1,5 @@
 extends Control
-## Mega Man-style stage select. Shows the five themed levels in a 3x3 grid with
+## Mega Man-style stage select. Shows eight themed levels in a 3x3 grid with
 ## the final-boss stage locked in the center until every other level is cleared.
 ## Completed levels are marked; clearing the last one plays an unlock animation
 ## that reveals and auto-focuses the center boss stage.
@@ -11,6 +11,9 @@ const PORTRAITS := {
 	"island": "res://sprites/forms/morphomon_idle.svg",
 	"jungle": "res://sprites/animals/panther.svg",
 	"pirate": "res://sprites/animals/monkey.svg",
+	"ocean_floor": "res://sprites/animals/swordfish.svg",
+	"space": "res://sprites/animals/alien.svg",
+	"factory": "res://sprites/animals/stuffed_bear.svg",
 	"boss": "res://sprites/boss/scientist_idle.svg",
 }
 

@@ -45,6 +45,27 @@ const FORMS := {
 		"attack_kind": "melee", "ability": "roll",
 		"phase_walls": false,
 	},
+	"swordfish": {
+		"name": "Swordfish",
+		"idle": S + "swordfish_form_idle.svg", "run": S + "swordfish_form_run.svg",
+		"speed": 295.0, "jump": -470.0, "can_fly": false, "double_jump": true,
+		"attack_kind": "laser", "ability": "dash",
+		"phase_walls": false,
+	},
+	"alien": {
+		"name": "Alien",
+		"idle": S + "alien_form_idle.svg", "run": S + "alien_form_run.svg",
+		"speed": 240.0, "jump": -420.0, "can_fly": true, "double_jump": false,
+		"attack_kind": "missile", "ability": "fly",
+		"phase_walls": true,
+	},
+	"stuffed_bear": {
+		"name": "Stuffed Bear",
+		"idle": S + "stuffed_bear_form_idle.svg", "run": S + "stuffed_bear_form_run.svg",
+		"speed": 215.0, "jump": -390.0, "can_fly": false, "double_jump": false,
+		"attack_kind": "melee", "ability": "toss",
+		"phase_walls": false,
+	},
 }
 
 

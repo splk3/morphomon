@@ -96,6 +96,36 @@ const THEMES := {
 			"lantern_color": Color(1.0, 0.66, 0.32), "lantern_energy": 1.2,
 		},
 	},
+	"ocean_floor": {
+		"layers": [
+			{"tex": B + "ocean_floor/sky_ocean_floor.svg", "scale": 0.0},
+			{"tex": B + "ocean_floor/reef_far.svg", "scale": 0.2},
+			{"tex": B + "ocean_floor/kelp_mid.svg", "scale": 0.42},
+			{"tex": B + "ocean_floor/seabed_near.svg", "scale": 0.65},
+		],
+		"fx": "rain", "fx_tex": B + "ocean_floor/bubbles.svg",
+		"ground": Color(0.14, 0.26, 0.31), "platform": Color(0.2, 0.38, 0.44),
+	},
+	"space": {
+		"layers": [
+			{"tex": B + "space/sky_space.svg", "scale": 0.0},
+			{"tex": B + "space/stars_far.svg", "scale": 0.12},
+			{"tex": B + "space/nebula_mid.svg", "scale": 0.32},
+			{"tex": B + "space/station_near.svg", "scale": 0.58},
+		],
+		"fx": "rain", "fx_tex": B + "space/cosmic_dust.svg",
+		"ground": Color(0.18, 0.2, 0.31), "platform": Color(0.33, 0.36, 0.52),
+	},
+	"factory": {
+		"layers": [
+			{"tex": B + "factory/sky_factory.svg", "scale": 0.0},
+			{"tex": B + "factory/smokestacks_far.svg", "scale": 0.15},
+			{"tex": B + "factory/pipes_mid.svg", "scale": 0.36},
+			{"tex": B + "factory/conveyor_near.svg", "scale": 0.62},
+		],
+		"fx": "embers", "fx_tex": B + "factory/sparks.svg",
+		"ground": Color(0.33, 0.31, 0.3), "platform": Color(0.46, 0.42, 0.36),
+	},
 	"boss": {
 		"layers": [
 			{"tex": B + "lava/sky_lava.svg", "scale": 0.0},

@@ -1,4 +1,5 @@
 ---
+model: Claude Sonnet 4.6 (copilot)
 description: "Use this agent for cross-cutting Godot project integration work: autoloads, input actions, project settings, save/load flows, and scene/system wiring.\n\nTrigger phrases include:\n- 'wire this feature into GameState'\n- 'update autoload integration'\n- 'add new input action to project.godot'\n- 'connect settings persistence across systems'\n- 'integrate audio manager with gameplay states'\n- 'hook scene transitions into progression/save logic'\n- 'fix cross-system wiring bugs'\n\nExamples:\n- User says 'add a new form unlock flow and persist it across sessions' → invoke this agent to integrate gameplay, GameState save data, and unlock progression wiring\n- User asks 'add a remappable input action and apply it in gameplay + UI' → invoke this agent to update project.godot input map and integrate action usage across systems\n- User requests 'pause should mute SFX duck music and restore properly' → invoke this agent to coordinate AudioManager, pause state, and settings behavior"
 name: godot-systems-integrator
 ---
