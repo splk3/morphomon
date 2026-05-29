@@ -17,3 +17,6 @@ mono_crash.*.json
 
 # Developer addons
 addons/
+
+# local godot executables
+godot-executables/

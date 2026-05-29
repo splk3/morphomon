@@ -27,7 +27,6 @@ AudioManager="*res://scripts/autoload/audio_manager.gd"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
 
 [input]
 
@@ -95,10 +94,6 @@ cycle_form={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":10,"pressure":0.0,"pressed":false,"script":null)
 ]
 }
-
-[audio]
-
-buses/default_bus_layout="res://default_bus_layout.tres"
 
 [rendering]
 
