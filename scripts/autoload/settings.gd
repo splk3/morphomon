@@ -7,11 +7,16 @@ extends Node
 
 const SAVE_PATH := "user://settings.cfg"
 
-## Selectable windowed resolutions.
-const RESOLUTIONS := [
+## Common 16:9 windowed sizes used to build a monitor-aware resolution list.
+const COMMON_16_9_RESOLUTIONS := [
+	Vector2i(640, 360),
+	Vector2i(854, 480),
+	Vector2i(960, 540),
 	Vector2i(1280, 720),
 	Vector2i(1600, 900),
 	Vector2i(1920, 1080),
+	Vector2i(2560, 1440),
+	Vector2i(3840, 2160),
 ]
 
 ## Actions the player may remap. Each may hold a keyboard and a gamepad binding.
@@ -20,6 +25,7 @@ const REBINDABLE_ACTIONS := [
 	"jump", "attack", "ability", "cycle_form", "pause",
 ]
 
+var resolutions: Array[Vector2i] = []
 var resolution_index := 0
 var fullscreen := false
 var master_volume := 1.0
@@ -33,6 +39,7 @@ var _default_events: Dictionary = {}
 
 func _ready() -> void:
 	_capture_defaults()
+	refresh_resolutions()
 	load_settings()
 	apply_all()
 
@@ -49,19 +56,70 @@ func apply_all() -> void:
 
 
 # --- Video --------------------------------------------------------------
+func refresh_resolutions() -> void:
+	var native := _get_native_resolution()
+	var list: Array[Vector2i] = []
+	for res in COMMON_16_9_RESOLUTIONS:
+		if res.x <= native.x and res.y <= native.y:
+			_append_unique_resolution(list, res)
+	_append_unique_resolution(list, native)
+	list.sort_custom(_sort_resolution_ascending)
+	resolutions = list
+	resolution_index = clampi(resolution_index, 0, resolutions.size() - 1)
+
+
 func apply_video() -> void:
+	if resolutions.is_empty():
+		refresh_resolutions()
 	if fullscreen:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		var res: Vector2i = RESOLUTIONS[clampi(resolution_index, 0, RESOLUTIONS.size() - 1)]
+		var res := get_resolution(resolution_index)
 		DisplayServer.window_set_size(res)
 		_center_window(res)
 
 
+func get_resolution(index: int) -> Vector2i:
+	if resolutions.is_empty():
+		return Vector2i(1280, 720)
+	return resolutions[clampi(index, 0, resolutions.size() - 1)]
+
+
+func _get_native_resolution() -> Vector2i:
+	var screen := DisplayServer.window_get_current_screen()
+	var native := DisplayServer.screen_get_size(screen)
+	if native.x <= 0 or native.y <= 0:
+		native = DisplayServer.window_get_size()
+	if native.x <= 0 or native.y <= 0:
+		native = Vector2i(1920, 1080)
+	return native
+
+
+func _append_unique_resolution(list: Array[Vector2i], res: Vector2i) -> void:
+	for existing in list:
+		if existing == res:
+			return
+	list.append(res)
+
+
+func _sort_resolution_ascending(a: Vector2i, b: Vector2i) -> bool:
+	if a.x == b.x:
+		return a.y < b.y
+	return a.x < b.x
+
+
+func _find_resolution_index(res: Vector2i, fallback: int) -> int:
+	for i in resolutions.size():
+		if resolutions[i] == res:
+			return i
+	return clampi(fallback, 0, resolutions.size() - 1)
+
+
 func _center_window(res: Vector2i) -> void:
-	var screen := DisplayServer.screen_get_size()
-	DisplayServer.window_set_position((screen - res) / 2)
+	var screen := DisplayServer.window_get_current_screen()
+	var screen_size := DisplayServer.screen_get_size(screen)
+	DisplayServer.window_set_position((screen_size - res) / 2)
 
 
 # --- Audio --------------------------------------------------------------
@@ -126,7 +184,10 @@ func get_binding_text(action: String) -> String:
 # --- Persistence --------------------------------------------------------
 func save_settings() -> void:
 	var cfg := ConfigFile.new()
+	var res := get_resolution(resolution_index)
 	cfg.set_value("video", "resolution_index", resolution_index)
+	cfg.set_value("video", "resolution_width", res.x)
+	cfg.set_value("video", "resolution_height", res.y)
 	cfg.set_value("video", "fullscreen", fullscreen)
 	cfg.set_value("audio", "master", master_volume)
 	cfg.set_value("audio", "music", music_volume)
@@ -141,6 +202,12 @@ func load_settings() -> void:
 	if cfg.load(SAVE_PATH) != OK:
 		return
 	resolution_index = cfg.get_value("video", "resolution_index", resolution_index)
+	var saved_width: int = cfg.get_value("video", "resolution_width", 0)
+	var saved_height: int = cfg.get_value("video", "resolution_height", 0)
+	if saved_width > 0 and saved_height > 0:
+		resolution_index = _find_resolution_index(Vector2i(saved_width, saved_height), resolution_index)
+	else:
+		resolution_index = clampi(resolution_index, 0, resolutions.size() - 1)
 	fullscreen = cfg.get_value("video", "fullscreen", fullscreen)
 	master_volume = cfg.get_value("audio", "master", master_volume)
 	music_volume = cfg.get_value("audio", "music", music_volume)

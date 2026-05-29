@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <!-- dim industrial/night SKY backdrop for boss factory level (far layer) -->
+  <rect width="1280" height="720" fill="#161a24"/>
+  <rect y="0" width="1280" height="240" fill="#10131c"/>
+  <rect y="240" width="1280" height="200" fill="#1b2030"/>
+  <rect y="440" width="1280" height="280" fill="#262d40"/>
+  <!-- sickly green-yellow smog glow on horizon -->
+  <rect y="430" width="1280" height="120" fill="#3a4a3a" opacity="0.35"/>
+  <rect y="470" width="1280" height="80" fill="#5a6b3a" opacity="0.22"/>
+  <!-- pale moon -->
+  <circle cx="1040" cy="150" r="46" fill="#c9cfe0" opacity="0.5"/>
+  <circle cx="1040" cy="150" r="46" fill="#161a24" opacity="0"/>
+  <circle cx="1058" cy="138" r="46" fill="#161a24" opacity="0.4"/>
+  <!-- cold stars -->
+  <g fill="#aeb6c8">
+    <rect x="120" y="80" width="3" height="3"/>
+    <rect x="300" y="140" width="2" height="2"/>
+    <rect x="520" y="60" width="3" height="3"/>
+    <rect x="700" y="120" width="2" height="2"/>
+    <rect x="880" y="90" width="2" height="2"/>
+    <rect x="220" y="200" width="2" height="2"/>
+    <rect x="600" y="210" width="2" height="2"/>
+    <rect x="1180" y="70" width="3" height="3"/>
+  </g>
+</svg>

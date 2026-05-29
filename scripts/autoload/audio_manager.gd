@@ -9,6 +9,24 @@ const MUSIC_DIR := "res://assets/music/"
 const SFX_DIR := "res://assets/sfx/"
 const SFX_VOICES := 8
 
+## Per-track loop-begin point in SECONDS. Each level theme is generated as a
+## one-shot INTRO followed by the looping MIDDLE body (see tools/generate_music.py).
+## Setting loop_begin past the intro makes the intro play once, then the body
+## loops forever. Keep these values in sync with the generator's printed output.
+## Keys not listed here loop from the start (loop_begin = 0).
+const MUSIC_LOOP_BEGIN := {
+	"menu_theme": 12.8000,
+	"cruise_theme": 15.4839,
+	"ice_theme": 14.5454,
+	"lava_theme": 11.4286,
+	"island_theme": 13.7143,
+	"jungle_theme": 15.0000,
+	"pirate_theme": 13.3333,
+	"boss_theme": 10.9091,
+	"credits_theme": 13.9130,
+	"victory_theme": 0.0,
+}
+
 var _music_player: AudioStreamPlayer
 var _sfx_players: Array[AudioStreamPlayer] = []
 var _sfx_index := 0
@@ -39,9 +57,14 @@ func _load_stream(dir: String, key: String, cache: Dictionary) -> AudioStream:
 	# Imported WAVs default to no looping; force music to loop seamlessly.
 	if stream is AudioStreamWAV and dir == MUSIC_DIR:
 		stream = stream.duplicate()
+		var total_frames := int(stream.data.size() / 2)  # 16-bit mono -> 2 bytes/frame
 		stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
-		stream.loop_begin = 0
-		stream.loop_end = stream.data.size() / 2  # 16-bit mono -> 2 bytes/frame
+		# Loop from the end of the intro so the intro plays once, then the
+		# MIDDLE body loops. Falls back to 0 (loop whole track) when unset.
+		var loop_sec: float = MUSIC_LOOP_BEGIN.get(key, 0.0)
+		var begin := int(loop_sec * stream.mix_rate)
+		stream.loop_begin = clampi(begin, 0, total_frames - 1)
+		stream.loop_end = total_frames
 	cache[key] = stream
 	return stream
 

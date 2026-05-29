@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <!-- distant DORMANT volcano, muted hazy far-parallax layer (transparent base) -->
+  <rect width="1280" height="720" fill="none"/>
+  <!-- broad volcano base, muted blue-grey haze -->
+  <polygon points="360,560 700,210 1040,560" fill="#7d8aa0" opacity="0.9"/>
+  <polygon points="300,560 700,210 1100,560" fill="#8e9ab0" opacity="0.45"/>
+  <!-- flattened dormant crater rim (no eruption) -->
+  <polygon points="648,236 700,210 752,236 740,252 660,252" fill="#6f7c92"/>
+  <rect x="660" y="248" width="80" height="10" fill="#5f6c82" opacity="0.8"/>
+  <!-- shadowed flank -->
+  <polygon points="700,210 1040,560 870,470 815,520 760,380" fill="#69768c" opacity="0.55"/>
+  <!-- faint old lava channels, cold/muted (no glow) -->
+  <g fill="#5b6072" opacity="0.5">
+    <polygon points="694,258 686,420 700,560 708,420 706,258"/>
+    <polygon points="724,266 740,400 726,500 720,400"/>
+  </g>
+  <!-- haze band over lower slopes -->
+  <rect x="0" y="470" width="1280" height="90" fill="#aeb9cc" opacity="0.35"/>
+</svg>

@@ -13,6 +13,21 @@ const ARENA_RIGHT := 1220.0
 const GROUND_Y := 600.0
 const FAKE_FORMS := ["panther", "mammoth", "eagle", "monkey"]
 
+const VIEW_W := 1280.0
+const VIEW_H := 720.0
+const BOSS_BG_DIR := "res://backgrounds/boss/"
+const FAKE_FALLBACK_SPRITE := "res://sprites/boss/fake_morphomon.svg"
+
+## Each fake-Morphomon form keeps the villain/boss robot color scheme but uses a
+## distinct animal silhouette. Forms without a dedicated sprite fall back to the
+## generic fake_morphomon.svg.
+const FAKE_FORM_SPRITES := {
+	"panther": "res://sprites/boss/fake_panther.svg",
+	"mammoth": "res://sprites/boss/fake_mammoth.svg",
+	"eagle": "res://sprites/boss/fake_eagle.svg",
+	"monkey": "res://sprites/boss/fake_monkey.svg",
+}
+
 var _player: CharacterBody2D
 var _banner: Label
 var _scientist: Sprite2D
@@ -23,6 +38,15 @@ var _ending := false
 
 func _ready() -> void:
 	GameState.pending_level_id = "boss"
+	# Intro flow: the encounter is meant to be entered via boss_intro.tscn
+	# (Morphomon enters the building, then meets the robot) which in turn loads
+	# this scene. We only redirect to the intro if GameState exposes a flag to
+	# track it -- we never invent autoload state other files would have to set.
+	# See the summary for the one-line wiring change needed in the caller.
+	if not _intro_already_seen() and _has_boss_intro_flag():
+		GameState.set("boss_intro_seen", true)
+		get_tree().change_scene_to_file("res://scenes/levels/boss_intro.tscn")
+		return
 	_build_background()
 	_build_arena()
 	_build_player()
@@ -34,18 +58,45 @@ func _ready() -> void:
 	_next_phase()
 
 
+func _has_boss_intro_flag() -> bool:
+	# Only use the intro-tracking flag if GameState already defines it; we must
+	# not invent autoload state that other files would be responsible for.
+	return "boss_intro_seen" in GameState
+
+
+func _intro_already_seen() -> bool:
+	if not _has_boss_intro_flag():
+		return true
+	return bool(GameState.get("boss_intro_seen"))
+
+
 func _build_background() -> void:
-	var theme := LevelThemes.get_theme("boss")
+	# Industrial factory / science-lab arena. Layered back-to-front as parallax:
+	#   lab_sky        -> far static sky
+	#   factory_far    -> mid factory silhouette
+	#   factory_interior -> interior wall closest to the action
 	var bg := ParallaxBackground.new()
+	bg.name = "BossBackground"
 	add_child(bg)
-	for info in theme.layers:
-		var layer := ParallaxLayer.new()
-		layer.motion_scale = Vector2(info.scale, 1.0)
-		bg.add_child(layer)
-		var spr := Sprite2D.new()
-		spr.centered = false
-		spr.texture = load(info.tex)
-		layer.add_child(spr)
+	_add_bg_layer(bg, "lab_sky.svg", 0.0)
+	_add_bg_layer(bg, "factory_far.svg", 0.3)
+	_add_bg_layer(bg, "factory_interior.svg", 0.6)
+
+
+func _add_bg_layer(bg: ParallaxBackground, file_name: String, motion: float) -> void:
+	var layer := ParallaxLayer.new()
+	layer.name = file_name.get_basename().to_pascal_case() + "Layer"
+	layer.motion_scale = Vector2(motion, 1.0)
+	bg.add_child(layer)
+	var spr := Sprite2D.new()
+	spr.centered = false
+	spr.texture = load(BOSS_BG_DIR + file_name)
+	# Scale the art to cover the viewport regardless of its native size.
+	if spr.texture:
+		var tex_size := spr.texture.get_size()
+		if tex_size.x > 0.0 and tex_size.y > 0.0:
+			spr.scale = Vector2(VIEW_W / tex_size.x, VIEW_H / tex_size.y)
+	layer.add_child(spr)
 
 
 func _build_arena() -> void:
@@ -131,7 +182,9 @@ func _next_phase() -> void:
 
 func _spawn_fake(form_theme: String) -> void:
 	var fake := EnemyScene.instantiate()
-	fake.texture_path = "res://sprites/boss/fake_morphomon.svg"
+	# Keep the consistent boss robot color scheme but show the matching animal
+	# silhouette for this form; fall back to the generic fake sprite if unmapped.
+	fake.texture_path = String(FAKE_FORM_SPRITES.get(form_theme, FAKE_FALLBACK_SPRITE))
 	fake.health = 5
 	fake.move_speed = 90.0
 	fake.patrol_distance = 380.0

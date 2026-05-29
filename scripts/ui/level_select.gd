@@ -20,9 +20,28 @@ var _boss_cell: Button
 
 func _ready() -> void:
 	_build_grid()
+	$Footer/MenuButton.focus_entered.connect(_play_nav)
 	$Footer/MenuButton.pressed.connect(_on_menu)
 	AudioManager.play_music("menu_theme")
 	_maybe_unlock_boss()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		_on_menu()
+
+
+func _play_nav() -> void:
+	AudioManager.play_sfx("ui_nav")
+
+
+func _play_select() -> void:
+	AudioManager.play_sfx("ui_select")
+
+
+func _play_back() -> void:
+	AudioManager.play_sfx("ui_back")
 
 
 func _build_grid() -> void:
@@ -68,6 +87,8 @@ func _make_cell(level: Dictionary) -> Button:
 			btn.icon = null
 			label = "???\nLOCKED"
 	btn.text = label
+	btn.focus_entered.connect(_play_nav)
+	btn.pressed.connect(_play_select)
 	btn.pressed.connect(_on_level_pressed.bind(level.id))
 	_cells[level.id] = btn
 	return btn
@@ -98,10 +119,9 @@ func _focus_first_available() -> void:
 
 
 func _on_level_pressed(level_id: String) -> void:
-	AudioManager.play_sfx("confirm")
 	GameState.go_to_level(level_id)
 
 
 func _on_menu() -> void:
-	AudioManager.play_sfx("select")
+	_play_back()
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

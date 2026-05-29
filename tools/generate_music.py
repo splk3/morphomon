@@ -70,15 +70,22 @@ def env(n, attack=0.005, release=0.04):
     return e
 
 
-def render_channel(notes, bpm, wave_fn, gain, duty=None):
-    """notes: list of (note_name, beats). Returns float array."""
+def render_channel(notes, bpm, wave_fn, gain, duty=None, transpose=0):
+    """notes: list of (note_name, beats). Returns float array.
+
+    ``transpose`` shifts every pitched note by N semitones, which lets a single
+    shared leitmotif be quoted in each level's key for a familiar feel.
+    """
     spb = 60.0 / bpm
+    shift = 2.0 ** (transpose / 12.0)
     chunks = []
     for name, beats in notes:
         n = int(beats * spb * SAMPLE_RATE)
         if n <= 0:
             continue
         f = note_freq(name)
+        if f > 0:
+            f *= shift
         if duty is not None:
             wave = wave_fn(f, n, duty)
         else:
@@ -89,6 +96,18 @@ def render_channel(notes, bpm, wave_fn, gain, duty=None):
     if not chunks:
         return np.zeros(0)
     return np.concatenate(chunks)
+
+
+def _pad_to(arr, n):
+    if len(arr) >= n:
+        return arr[:n]
+    return np.pad(arr, (0, n - len(arr)))
+
+
+def section_samples(melody, bpm):
+    """Total samples spanned by a melody's beats (defines the section length)."""
+    spb = 60.0 / bpm
+    return int(sum(b for _, b in melody) * spb * SAMPLE_RATE)
 
 
 def noise_track(pattern, bpm, gain):
@@ -270,6 +289,51 @@ def song_credits():
     return bpm, melody, bass, drums, 0.5
 
 
+# --- Shared leitmotif --------------------------------------------------
+# A single melodic signature, written in C, quoted (transposed) at the start
+# of every level's INTRO section so the whole soundtrack feels related while
+# each level keeps its own key/tempo/energy in the looping MIDDLE section.
+LEITMOTIF = [
+    ("C5", .5), ("E5", .5), ("G5", 1), ("E5", .5), ("F5", .5), ("D5", 1),
+    ("C5", .5), ("E5", .5), ("G5", 1), ("C6", .5), ("B5", .5), ("G5", 1),
+    ("A5", .5), ("G5", .5), ("E5", 1), ("D5", .5), ("E5", .5), ("C5", 1),
+    ("E5", .5), ("G5", .5), ("C6", 1), ("G5", .5), ("E5", .5), ("C5", 1),
+]  # 16 beats. Stated twice in the intro -> ~10-15s across the tempo range.
+
+# INTRO melody = two statements of the leitmotif (the 2nd an octave-flavored
+# answer is implied by transpose); accompaniment spans the full 32 beats.
+INTRO_MELODY = LEITMOTIF + LEITMOTIF
+INTRO_BASS = [("C2", 2), ("G2", 2)] * 8  # 32 beats, root/fifth foundation.
+INTRO_DRUMS = [("H", .5), ("H", .5)] * 16  # light hats: a gentle build-in.
+
+# Per-track semitone transpose so the shared leitmotif lands in each key.
+TRANSPOSE = {
+    "menu_theme": 4,      # E center  (inviting statement)
+    "cruise_theme": 7,    # G center  (sunny, upbeat)
+    "ice_theme": 9,       # A center  (cold, airy)
+    "lava_theme": 0,      # C minor   (intense, hot)
+    "island_theme": 2,    # D center  (breezy tropical)
+    "jungle_theme": 4,    # E center  (rhythmic)
+    "pirate_theme": 2,    # D center  (swashbuckling)
+    "boss_theme": 0,      # C minor   (tense, epic)
+    "credits_theme": 0,   # C major   (triumphant/reflective)
+    "victory_theme": 7,   # G major   (celebratory fanfare)
+}
+
+
+def song_victory():
+    """Short triumphant celebration jingle played when a level is cleared."""
+    bpm = 150
+    melody = lead([
+        ("G4", .25), ("C5", .25), ("E5", .25), ("G5", .25), ("C6", 1), ("B5", .5), ("C6", 1),
+        ("A5", .5), ("C6", .5), ("E6", 1), ("D6", .5), ("C6", .5), ("G5", 1.5),
+        ("C5", .5), ("E5", .5), ("G5", .5), ("C6", 1.5),
+    ])
+    bass = lead([("C2", 1), ("G2", 1), ("C2", 1), ("F2", 1), ("G2", 1), ("C2", 1)])
+    drums = [("K", .5), ("H", .5), ("S", .5), ("H", .5)] * 4
+    return bpm, melody, bass, drums, 0.5
+
+
 SONGS = {
     "menu_theme": song_menu,
     "cruise_theme": song_cruise,
@@ -280,24 +344,62 @@ SONGS = {
     "pirate_theme": song_pirate,
     "boss_theme": song_boss,
     "credits_theme": song_credits,
+    "victory_theme": song_victory,
+}
+
+# Tracks that get the intro -> looping-middle treatment. The celebration jingle
+# is meant to play through once, so it loops from the top like a stinger.
+INTRO_TRACKS = {
+    "menu_theme", "cruise_theme", "ice_theme", "lava_theme", "island_theme",
+    "jungle_theme", "pirate_theme", "boss_theme", "credits_theme",
 }
 
 
 def build(name, fn):
     np.random.seed(abs(hash(name)) % (2 ** 32))
     bpm, melody, bass, drums, duty = fn()
-    lead_ch = render_channel(melody, bpm, square, 0.35, duty=duty)
-    # Double the bassline length-wise to span the melody if needed via mix padding.
-    bass_ch = render_channel(bass, bpm, triangle, 0.5)
-    drum_ch = noise_track(drums, bpm, 0.5)
+    transpose = TRANSPOSE.get(name, 0)
+
+    sections = []  # list of (lead, bass, drum) float arrays, one per section.
+    loop_begin_samples = 0
+
+    if name in INTRO_TRACKS:
+        # INTRO: shared leitmotif in this level's key, gentle drums.
+        intro_len = section_samples(INTRO_MELODY, bpm)
+        intro_lead = _pad_to(render_channel(INTRO_MELODY, bpm, square, 0.32, duty=duty,
+                                            transpose=transpose), intro_len)
+        intro_bass = _pad_to(render_channel(INTRO_BASS, bpm, triangle, 0.5,
+                                            transpose=transpose), intro_len)
+        intro_drum = _pad_to(noise_track(INTRO_DRUMS, bpm, 0.35), intro_len)
+        sections.append((intro_lead, intro_bass, intro_drum))
+        loop_begin_samples = intro_len
+
+    # MIDDLE (the looping body) -- the per-level groove.
+    body_len = section_samples(melody, bpm)
+    body_lead = _pad_to(render_channel(melody, bpm, square, 0.35, duty=duty), body_len)
+    body_bass = _pad_to(render_channel(bass, bpm, triangle, 0.5), body_len)
+    body_drum = _pad_to(noise_track(drums, bpm, 0.5), body_len)
+    sections.append((body_lead, body_bass, body_drum))
+
+    lead_ch = np.concatenate([s[0] for s in sections])
+    bass_ch = np.concatenate([s[1] for s in sections])
+    drum_ch = np.concatenate([s[2] for s in sections])
     out = mix([lead_ch, bass_ch, drum_ch])
     write_wav(name, out)
+
+    loop_begin_sec = loop_begin_samples / float(SAMPLE_RATE)
+    return loop_begin_sec
 
 
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
+    loop_points = {}
     for name, fn in SONGS.items():
-        build(name, fn)
+        loop_points[name] = build(name, fn)
+    # Print loop-begin seconds so audio_manager.gd's MUSIC_LOOP_BEGIN stays in sync.
+    print("\n# loop_begin seconds (intro length) per track:")
+    for name in SONGS:
+        print('# "%s": %.4f,' % (name, loop_points[name]))
 
 
 if __name__ == "__main__":

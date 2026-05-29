@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <rect width="1280" height="720" fill="none"/>
+  <!-- Mid-distance ripples drifting at a moderate speed. -->
+  <g fill="#9ee3df" opacity="0.7">
+    <rect x="40" y="372" width="150" height="8"/>
+    <rect x="260" y="382" width="120" height="8"/>
+    <rect x="470" y="370" width="170" height="8"/>
+    <rect x="720" y="386" width="140" height="8"/>
+    <rect x="940" y="374" width="160" height="8"/>
+    <rect x="1160" y="384" width="120" height="8"/>
+  </g>
+  <g fill="#c8f3ef" opacity="0.6">
+    <rect x="150" y="404" width="120" height="6"/>
+    <rect x="540" y="408" width="150" height="6"/>
+    <rect x="900" y="402" width="130" height="6"/>
+  </g>
+</svg>

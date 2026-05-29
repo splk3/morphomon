@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <!-- INTERIOR factory / science-lab wall: pipes, panels, screens, machinery -->
+  <rect width="1280" height="720" fill="#2b3140"/>
+  <!-- wall panel grid -->
+  <rect y="0" width="1280" height="360" fill="#323a4b"/>
+  <rect y="360" width="1280" height="360" fill="#262c3a"/>
+  <g stroke="#1c2230" stroke-width="3" fill="none">
+    <rect x="40" y="40" width="200" height="150"/>
+    <rect x="260" y="40" width="200" height="150"/>
+    <rect x="480" y="40" width="200" height="150"/>
+    <rect x="820" y="40" width="200" height="150"/>
+    <rect x="1040" y="40" width="200" height="150"/>
+  </g>
+  <!-- rivets -->
+  <g fill="#454e63">
+    <rect x="48" y="48" width="4" height="4"/><rect x="228" y="48" width="4" height="4"/>
+    <rect x="48" y="178" width="4" height="4"/><rect x="228" y="178" width="4" height="4"/>
+    <rect x="1048" y="48" width="4" height="4"/><rect x="1228" y="48" width="4" height="4"/>
+  </g>
+  <!-- big monitor screens -->
+  <g>
+    <rect x="710" y="60" width="90" height="120" fill="#0f1620" stroke="#1c2230" stroke-width="4"/>
+    <rect x="720" y="72" width="70" height="16" fill="#39d0a8" opacity="0.8"/>
+    <rect x="720" y="96" width="50" height="8" fill="#39d0a8" opacity="0.5"/>
+    <rect x="720" y="110" width="64" height="8" fill="#39d0a8" opacity="0.5"/>
+    <rect x="720" y="130" width="40" height="8" fill="#ffd15a" opacity="0.6"/>
+    <rect x="720" y="150" width="56" height="8" fill="#39d0a8" opacity="0.4"/>
+  </g>
+  <!-- gauges / dials panel -->
+  <g>
+    <rect x="500" y="60" width="160" height="110" fill="#1c2230"/>
+    <circle cx="540" cy="100" r="20" fill="#0f1620" stroke="#454e63" stroke-width="3"/>
+    <rect x="538" y="84" width="4" height="16" fill="#ff6b3a"/>
+    <circle cx="600" cy="100" r="20" fill="#0f1620" stroke="#454e63" stroke-width="3"/>
+    <rect x="598" y="84" width="4" height="16" fill="#39d0a8"/>
+    <rect x="514" y="138" width="132" height="10" fill="#0f1620"/>
+    <rect x="514" y="138" width="80" height="10" fill="#ffd15a" opacity="0.7"/>
+  </g>
+  <!-- vertical pipes -->
+  <g fill="#3f4658">
+    <rect x="20" y="0" width="26" height="720"/>
+    <rect x="1234" y="0" width="26" height="720"/>
+    <rect x="300" y="200" width="20" height="520"/>
+    <rect x="980" y="200" width="20" height="520"/>
+  </g>
+  <g fill="#555f76">
+    <rect x="20" y="0" width="8" height="720"/>
+    <rect x="1234" y="0" width="8" height="720"/>
+  </g>
+  <!-- horizontal pipe + valves -->
+  <rect x="0" y="250" width="1280" height="22" fill="#3f4658"/>
+  <g fill="#6b7488">
+    <rect x="180" y="244" width="34" height="34"/>
+    <rect x="640" y="244" width="34" height="34"/>
+    <rect x="1080" y="244" width="34" height="34"/>
+  </g>
+  <!-- floor machinery base -->
+  <rect y="600" width="1280" height="120" fill="#1c2230"/>
+  <g fill="#0f1620">
+    <rect x="80" y="540" width="160" height="60"/>
+    <rect x="420" y="560" width="200" height="40"/>
+    <rect x="900" y="540" width="180" height="60"/>
+  </g>
+  <!-- warning stripes on floor edge -->
+  <g fill="#ffd15a" opacity="0.7">
+    <rect x="0" y="596" width="40" height="8"/>
+    <rect x="80" y="596" width="40" height="8"/>
+    <rect x="160" y="596" width="40" height="8"/>
+    <rect x="1120" y="596" width="40" height="8"/>
+    <rect x="1200" y="596" width="40" height="8"/>
+  </g>
+</svg>

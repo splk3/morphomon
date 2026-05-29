@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <rect width="1280" height="720" fill="none"/>
+  <!-- Shimmer line exactly where water meets sky: the farthest water band. -->
+  <rect x="0" y="334" width="1280" height="6" fill="#bfeef0" opacity="0.85"/>
+  <rect x="0" y="340" width="1280" height="10" fill="#7fd0d4" opacity="0.55"/>
+  <g fill="#eafffb" opacity="0.7">
+    <rect x="120" y="336" width="120" height="4"/>
+    <rect x="430" y="336" width="160" height="4"/>
+    <rect x="760" y="336" width="140" height="4"/>
+    <rect x="1040" y="336" width="120" height="4"/>
+  </g>
+</svg>

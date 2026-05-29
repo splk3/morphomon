@@ -50,7 +50,7 @@ const LEVELS := [
 	},
 	{
 		"id": "boss", "name": "Dr. Morphous", "theme": "boss", "intro": false,
-		"scene": "res://scenes/levels/level_boss.tscn", "music": "boss_theme",
+		"scene": "res://scenes/levels/boss_intro.tscn", "music": "boss_theme",
 		"form": FORM_DEFAULT, "grid": Vector2i(1, 1), "final": true,
 	},
 ]

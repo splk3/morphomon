@@ -43,6 +43,15 @@ def noise_burst(dur, decay_rate=20):
     return np.random.uniform(-1, 1, n) * np.exp(-t * decay_rate)
 
 
+def layer(*arrs):
+    """Sum layers of differing lengths by zero-padding to the longest."""
+    n = max(len(a) for a in arrs)
+    out = np.zeros(n)
+    for a in arrs:
+        out[:len(a)] += a
+    return out
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     np.random.seed(7)
@@ -56,6 +65,33 @@ def main():
     write("select", square_sweep(600, 600, 0.06))
     write("confirm", square_sweep(600, 900, 0.14))
     write("rescue", square_sweep(400, 800, 0.25) * 0.5 + square_sweep(800, 1200, 0.25) * 0.5)
+    # --- New UI / movement SFX (same chiptune voice as above) -------------
+    # ui_nav: short, subtle blip for moving the menu cursor.
+    write("ui_nav", square_sweep(880, 880, 0.045, duty=0.5) * 0.5)
+    # ui_select: brighter rising confirm for activating a menu item.
+    write("ui_select", layer(square_sweep(720, 1180, 0.10, duty=0.5) * 0.7,
+                             square_sweep(1180, 1320, 0.06) * 0.3))
+    # ui_back: downward cancel tone for backing out / closing menus.
+    write("ui_back", square_sweep(700, 320, 0.12, duty=0.5) * 0.7)
+    # land: soft low thud when the player touches down.
+    write("land", layer(noise_burst(0.10, 22) * 0.35, square_sweep(150, 60, 0.12) * 0.6))
+    # dash: airy jet whoosh for the dash move.
+    write("dash", layer(noise_burst(0.22, 7) * 0.55,
+                        square_sweep(220, 900, 0.20, duty=0.25) * 0.35))
+    # laser_charge: rising charge swell for the eagle laser winding up.
+    write("laser_charge", laser_charge(0.55))
+
+
+def laser_charge(dur, f0=260, f1=1500, duty=0.125):
+    """Rising-pitch tone that *swells* in volume (a charge-up, not a decay)."""
+    n = int(dur * SR)
+    t = np.linspace(0, dur, n)
+    freq = np.linspace(f0, f1, n)
+    phase = np.cumsum(freq) / SR
+    wave_ = np.where((phase % 1.0) < duty, 1.0, -1.0)
+    swell = np.linspace(0.0, 1.0, n) ** 1.6  # amplitude grows as it charges.
+    vibrato = 1.0 + 0.04 * np.sin(2 * np.pi * 18 * t)  # subtle shimmer
+    return wave_ * swell * vibrato
 
 
 if __name__ == "__main__":

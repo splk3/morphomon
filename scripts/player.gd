@@ -38,16 +38,25 @@ var _jumps_used := 0
 var _attack_timer := 0.0
 var _invuln_timer := 0.0
 var _dash_timer := 0.0
+var _was_on_floor := false
+var _fall_speed_on_landing := 0.0
+
+# Minimum downward speed required for a landing to play the "land" SFX, so soft
+# step-downs and floor jitter don't trigger the sound.
+const LAND_MIN_FALL_SPEED := 120.0
 
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 @onready var animation_player: AnimationPlayer = get_node_or_null("AnimationPlayer")
+@onready var dash_jet: CPUParticles2D = get_node_or_null("DashJet")
 
 
 func _ready() -> void:
-	if _has_game_state():
-		apply_form(GameState.current_form)
-	else:
-		apply_form("default")
+	# Every level always begins in the base "default" form. The player only
+	# transforms after scanning a rescue animal (see rescue_animal.gd), even if
+	# GameState remembers a previously-used form. This keeps each level's opening
+	# state consistent both visually and mechanically.
+	apply_form("default")
+	_setup_dash_jet()
 
 
 func _has_game_state() -> bool:
@@ -103,6 +112,13 @@ func _physics_process(delta: float) -> void:
 	if on_floor:
 		_jumps_used = 0
 
+	# Landing edge: airborne last frame, grounded this frame. Gate on a minimum
+	# fall speed so soft step-downs and floor jitter stay silent.
+	if on_floor and not _was_on_floor and _fall_speed_on_landing >= LAND_MIN_FALL_SPEED:
+		_play_sfx("land")
+	# Cache the downward speed *before* move_and_slide zeroes it on contact.
+	_fall_speed_on_landing = velocity.y
+
 	# Flight (eagle) or gravity.
 	if can_fly and Input.is_action_pressed("jump"):
 		velocity.y = maxf(velocity.y + FLY_FORCE * delta, FLY_FORCE)
@@ -133,6 +149,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	update_animation()
+	_was_on_floor = is_on_floor()
 
 
 func _try_jump(on_floor: bool) -> void:
@@ -192,10 +209,79 @@ func _use_ability() -> void:
 		"dash", "roll":
 			_dash_timer = 0.25
 			_invuln_timer = 0.25  # rolling/dashing briefly dodges damage
+			_emit_dash_jet(0.25)
+			_play_sfx("dash")
 		"toss", "swing", "fly":
 			# Heavy-lift toss, rigging swing and sustained flight are scaffolded
 			# here; see PR notes for the full mechanic roadmap.
 			_dash_timer = 0.2
+
+
+## Lazily create the dash flame-jet particles and build their texture in code so
+## the effect never depends on external art. Safe to call if the node already
+## exists in the scene.
+func _setup_dash_jet() -> void:
+	if dash_jet == null:
+		dash_jet = CPUParticles2D.new()
+		dash_jet.name = "DashJet"
+		add_child(dash_jet)
+	dash_jet.emitting = false
+	dash_jet.one_shot = true
+	dash_jet.explosiveness = 0.25
+	dash_jet.amount = 24
+	dash_jet.lifetime = 0.35
+	dash_jet.local_coords = false
+	dash_jet.texture = _build_jet_texture()
+	dash_jet.emission_shape = CPUParticles2D.EMISSION_SHAPE_SPHERE
+	dash_jet.emission_sphere_radius = 4.0
+	dash_jet.spread = 18.0
+	dash_jet.gravity = Vector2.ZERO
+	dash_jet.initial_velocity_min = 140.0
+	dash_jet.initial_velocity_max = 220.0
+	dash_jet.scale_amount_min = 0.6
+	dash_jet.scale_amount_max = 1.1
+	# Shrink the flame over its life.
+	var scale_curve := Curve.new()
+	scale_curve.add_point(Vector2(0.0, 1.0))
+	scale_curve.add_point(Vector2(1.0, 0.0))
+	dash_jet.scale_amount_curve = scale_curve
+	# Orange core fading to transparent yellow tail.
+	var grad := Gradient.new()
+	grad.set_color(0, Color(1.0, 0.55, 0.1, 1.0))
+	grad.set_color(1, Color(1.0, 0.9, 0.2, 0.0))
+	dash_jet.color_ramp = grad
+
+
+## Build a soft round flame particle texture procedurally (orange -> yellow ->
+## transparent radial gradient) so no external art asset is required.
+func _build_jet_texture() -> GradientTexture2D:
+	var grad := Gradient.new()
+	grad.set_color(0, Color(1.0, 0.85, 0.3, 1.0))
+	grad.add_point(0.5, Color(1.0, 0.5, 0.05, 0.85))
+	grad.set_color(1, Color(1.0, 0.4, 0.0, 0.0))
+	var tex := GradientTexture2D.new()
+	tex.gradient = grad
+	tex.width = 16
+	tex.height = 16
+	tex.fill = GradientTexture2D.FILL_RADIAL
+	tex.fill_from = Vector2(0.5, 0.5)
+	tex.fill_to = Vector2(1.0, 0.5)
+	return tex
+
+
+## Fire the flame jet out of the BACK of Morphomon (opposite the facing/dash
+## direction) for the dash duration.
+func _emit_dash_jet(duration: float) -> void:
+	if dash_jet == null:
+		return
+	# Jets exit the rear, opposite to the way the player faces.
+	var back_dir := -1.0 if facing_right else 1.0
+	dash_jet.position = Vector2(back_dir * 12.0, 0.0)
+	dash_jet.direction = Vector2(back_dir, 0.0)
+	dash_jet.lifetime = maxf(0.05, duration)
+	dash_jet.emitting = false
+	dash_jet.restart()
+	dash_jet.emitting = true
 
 
 func take_damage(amount: int) -> void:

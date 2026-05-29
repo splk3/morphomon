@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="32" viewBox="0 0 256 32">
+  <!-- horizontal bluish energy BEAM segment; vertical glow falloff, uniform along X (tileable) -->
+  <defs>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a6cff" stop-opacity="0"/>
+      <stop offset="25%" stop-color="#4aa8ff" stop-opacity="0.45"/>
+      <stop offset="42%" stop-color="#8fd6ff" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="58%" stop-color="#8fd6ff" stop-opacity="0.8"/>
+      <stop offset="75%" stop-color="#4aa8ff" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#2a6cff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="32" fill="none"/>
+  <rect width="256" height="32" fill="url(#beam)"/>
+  <!-- bright solid core line -->
+  <rect x="0" y="14" width="256" height="4" fill="#ffffff"/>
+</svg>
