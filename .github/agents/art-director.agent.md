@@ -64,6 +64,8 @@ Quality control mechanisms:
 - Ensure visual style is consistent with established conventions
 - Check that graphics are optimized (appropriate resolution, compression, atlasing)
 - Validate that all visual assets are properly organized and named for maintainability
+- Run `godot --headless --import --quit` after scene/asset integration changes
+- Verify all referenced visual resource paths resolve from their scenes/scripts
 
 Decision-making framework:
 - Artistic choices: Prioritize visual cohesion and established art style over novelty

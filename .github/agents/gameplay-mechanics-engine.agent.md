@@ -146,6 +146,11 @@ Before finalizing code:
 
 5. **Documentation**: Is the code and its state transitions clear enough that another developer could maintain it?
 
+6. **Project Validation Gate**:
+   - Run `godot --headless --import --quit`
+   - Verify referenced scene/resource paths exist for any changed gameplay wiring
+   - Confirm integration behavior with autoload systems (GameState/Settings/AudioManager) when touched
+
 ---
 
 Escalation & Clarification Triggers:

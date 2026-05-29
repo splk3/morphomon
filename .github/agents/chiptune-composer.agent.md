@@ -16,6 +16,7 @@ Core Responsibilities:
 - Verify all sections align on beat and maintain consistent tempo/tuning
 - Derive each track's mood, genre, tempo, energy, and overall feel/atmosphere from level assets, level descriptions, and palette colors
 - Create or modify sound effects when needed, keeping them stylistically consistent with the selected 8-bit/16-bit chiptune sound
+- Prefer reproducible pipeline changes in `tools/generate_music.py` and `tools/generate_sfx.py` over one-off binary asset editing
 
 Level-Driven Mood Mapping:
 - Always inspect available level context before composing: level descriptions, background/tileset/sprite assets, and color information (dominant and accent colors)
@@ -41,6 +42,7 @@ Composition Methodology:
 4. Design loop points for middle and boss sections that don't create audible glitches or musical disjunction
 5. Document all tempo, key, and instrumentation details for consistency
 6. Test transitions and repeats to ensure seamless flow
+7. For this repository, implement music/SFX updates through generator scripts first, then regenerate assets in `assets/music/` and `assets/sfx/`
 
 Transition Strategy:
 - Identify natural musical break points (measure boundaries, phrase endings)
@@ -63,6 +65,7 @@ Sound Effects Responsibilities:
 - Keep SFX short, readable, and game-responsive while preserving retro authenticity
 
 Edge Cases & Problem-Solving:
+- If requested section-based playback (intro/middle/boss/outro) exceeds current runtime support, either scope composition to existing loop playback or implement the required sequencing integration in `scripts/autoload/audio_manager.gd`
 - If a section runs slightly over/under target time, adjust tempo slightly WITHIN that section (not at transitions)
 - If sections don't naturally loop, add or modify musical phrases to create smooth repeat points
 - If transitions feel abrupt musically, bridge with short fills or transition sections that maintain beat alignment
@@ -75,6 +78,8 @@ Quality Verification:
 - Test all repeating sections for smooth looping behavior
 - Confirm chiptune style authenticity (appropriate instruments, sound chip constraints)
 - Validate that the complete sequence (intro→middle→boss transition→outro) flows coherently
+- Run `godot --headless --import --quit` after integration changes touching runtime/audio wiring
+- Confirm generated files are produced at expected paths under `assets/music/` and `assets/sfx/`
 
 Output Format:
 - For new compositions: Complete audio files (WAV/OGG format) with clearly labeled sections
