@@ -93,6 +93,16 @@ func _build_lighting() -> void:
 	sun.z_index = 200
 	holder.add_child(sun)
 
+	# Soft reflected highlight on the road directly below the sun.
+	var road_glow := Sprite2D.new()
+	road_glow.name = "RoadGlow"
+	road_glow.texture = _make_radial_light_texture(320, Color(1.0, 0.80, 0.56))
+	road_glow.position = Vector2(640, 598)
+	road_glow.scale = Vector2(4.2, 0.9)
+	road_glow.modulate = Color(1.0, 0.82, 0.60, 0.22)
+	road_glow.z_index = 112
+	holder.add_child(road_glow)
+
 
 ## Procedurally builds the layered parallax background.
 func _build_background() -> void:
@@ -146,6 +156,8 @@ func _build_morphomon() -> void:
 	_morph.texture = _morph_run
 	_morph.scale = Vector2(2.2, 2.2)
 	_morph.position = MORPH_BASE_POS
+	# Keep Morphomon readable and avoid a mirror-like moving shadow on the sprite.
+	_morph.light_mask = 0
 	# Between the road (z 110) and the foreground palms (z 120): morph races
 	# behind the front trees but in front of the road, water and sky.
 	_morph_z = 11 * Z_STEP + Z_STEP / 2  # 115

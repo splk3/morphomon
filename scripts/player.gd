@@ -45,6 +45,18 @@ var _fall_speed_on_landing := 0.0
 # step-downs and floor jitter don't trigger the sound.
 const LAND_MIN_FALL_SPEED := 120.0
 
+# Eagle laser charge state (overrides normal attack cooldown).
+const EAGLE_CHARGE_TIME := 0.5
+const EAGLE_FIRE_TIME := 1.0
+const EAGLE_BEAM_LEN := 1280.0
+var _eagle_charge: Sprite2D
+var _eagle_beam: Node2D
+var _eagle_beam_area: Area2D
+var _eagle_state := ""  # "idle", "charge", "fire"
+var _eagle_timer := 0.0
+
+const LIGHT_RADIAL := "res://textures/light/radial_glow.svg"
+
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 @onready var animation_player: AnimationPlayer = get_node_or_null("AnimationPlayer")
 @onready var dash_jet: CPUParticles2D = get_node_or_null("DashJet")
@@ -57,6 +69,7 @@ func _ready() -> void:
 	# state consistent both visually and mechanically.
 	apply_form("default")
 	_setup_dash_jet()
+	_setup_eagle_beam()
 
 
 func _has_game_state() -> bool:
@@ -107,6 +120,8 @@ func _physics_process(delta: float) -> void:
 	_attack_timer = maxf(0.0, _attack_timer - delta)
 	_invuln_timer = maxf(0.0, _invuln_timer - delta)
 	_dash_timer = maxf(0.0, _dash_timer - delta)
+	
+	_update_eagle_laser(delta)
 
 	var on_floor := is_on_floor()
 	if on_floor:
@@ -162,6 +177,12 @@ func _try_jump(on_floor: bool) -> void:
 
 
 func _attack() -> void:
+	# Eagle laser requires special state handling (charge -> fire sequence).
+	if form_id == "eagle" and attack_kind == "laser":
+		if _eagle_state == "":
+			_start_eagle_charge()
+		return
+	
 	if _attack_timer > 0.0:
 		return
 	_attack_timer = ATTACK_COOLDOWN
@@ -312,3 +333,121 @@ func update_animation() -> void:
 func _play_sfx(key: String) -> void:
 	if _has_game_state() and get_tree().root.has_node("AudioManager"):
 		get_tree().root.get_node("AudioManager").play_sfx(key)
+
+
+## Set up the eagle laser beam and charge glow (created once, reused).
+func _setup_eagle_beam() -> void:
+	# Charge glow sprite.
+	_eagle_charge = Sprite2D.new()
+	_eagle_charge.texture = load("res://sprites/effects/laser_charge_glow.svg")
+	_eagle_charge.visible = false
+	_eagle_charge.z_index = 5
+	_eagle_charge.modulate = Color.WHITE
+	add_child(_eagle_charge)
+
+	# Beam node centred on the horizontal beam line.
+	_eagle_beam = Node2D.new()
+	_eagle_beam.visible = false
+	_eagle_beam.modulate = Color.WHITE
+	add_child(_eagle_beam)
+
+	var beam_spr := Sprite2D.new()
+	beam_spr.texture = load("res://sprites/effects/laser_beam.svg")
+	beam_spr.centered = true
+	# Source sprite is 256x32; stretch to the full beam length.
+	beam_spr.scale = Vector2(EAGLE_BEAM_LEN / 256.0, 0.9)
+	beam_spr.z_index = 4
+	_eagle_beam.add_child(beam_spr)
+
+	# Hazard area for the laser beam.
+	_eagle_beam_area = Area2D.new()
+	_eagle_beam_area.collision_layer = 0
+	_eagle_beam_area.collision_mask = 0  # We'll check overlaps manually
+	_eagle_beam_area.monitoring = true
+	var shape := CollisionShape2D.new()
+	var box := RectangleShape2D.new()
+	box.size = Vector2(EAGLE_BEAM_LEN, 26)
+	shape.shape = box
+	_eagle_beam_area.add_child(shape)
+	_eagle_beam.add_child(_eagle_beam_area)
+
+	# Bluish self-illumination above and below the beam - brilliant white-blue glow.
+	var beam_x := -EAGLE_BEAM_LEN / 2.0
+	while beam_x <= EAGLE_BEAM_LEN / 2.0:
+		var glow := PointLight2D.new()
+		glow.texture = load(LIGHT_RADIAL)
+		glow.color = Color(0.7, 0.85, 1.0)
+		glow.energy = 2.2
+		glow.texture_scale = 0.65
+		glow.position = Vector2(beam_x, 0)
+		_eagle_beam.add_child(glow)
+		beam_x += 128.0
+
+
+func _update_eagle_laser(delta: float) -> void:
+	if form_id != "eagle" or _eagle_state == "":
+		return
+	
+	_eagle_timer -= delta
+	match _eagle_state:
+		"charge":
+			# Grow + pulse the charge glow as it winds up.
+			var t := 1.0 - clampf(_eagle_timer / EAGLE_CHARGE_TIME, 0.0, 1.0)
+			if _eagle_charge:
+				var s := lerpf(0.3, 1.4, t)
+				_eagle_charge.scale = Vector2(s, s)
+			if _eagle_timer <= 0.0:
+				_start_eagle_fire()
+		"fire":
+			if _eagle_beam:
+				# Pulse the beam visibility.
+				var t := clampf(_eagle_timer / EAGLE_FIRE_TIME, 0.0, 1.0)
+				_eagle_beam.modulate.a = 0.85 + sin(t * PI * 4.0) * 0.15
+				# Continuously damage enemies
+				_damage_with_eagle_beam()
+			if _eagle_timer <= 0.0:
+				_end_eagle_fire()
+
+
+func _start_eagle_charge() -> void:
+	_eagle_state = "charge"
+	_eagle_timer = EAGLE_CHARGE_TIME
+	if _eagle_charge:
+		_eagle_charge.visible = true
+		_eagle_charge.scale = Vector2(0.3, 0.3)
+		_eagle_charge.global_position = global_position
+	_play_sfx("laser_charge")
+
+
+func _start_eagle_fire() -> void:
+	_eagle_state = "fire"
+	_eagle_timer = EAGLE_FIRE_TIME
+	if _eagle_charge:
+		_eagle_charge.visible = false
+	if _eagle_beam:
+		_eagle_beam.visible = true
+		# Position beam from player outward in facing direction.
+		var dir := 1.0 if facing_right else -1.0
+		# Beam extends from player position to edge of screen.
+		var beam_center_x := global_position.x + (dir * EAGLE_BEAM_LEN / 2.0)
+		_eagle_beam.position = Vector2(beam_center_x, global_position.y)
+		_eagle_beam.scale.x = dir
+		# Damage enemies hit by the beam.
+		_damage_with_eagle_beam()
+	_play_sfx("laser")
+
+
+func _end_eagle_fire() -> void:
+	_eagle_state = ""
+	if _eagle_beam:
+		_eagle_beam.visible = false
+	# Long cooldown before next charge can start.
+	_attack_timer = 2.0
+
+
+func _damage_with_eagle_beam() -> void:
+	if _eagle_beam_area == null:
+		return
+	for body in _eagle_beam_area.get_overlapping_bodies():
+		if body.is_in_group("enemy") and body.has_method("take_damage"):
+			body.take_damage(2)

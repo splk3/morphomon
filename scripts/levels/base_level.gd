@@ -19,12 +19,6 @@ const VIEW := Vector2(1280, 720)
 const LIGHT_RADIAL := "res://textures/light/radial_glow.svg"
 const LIGHT_SOFT := "res://textures/light/soft_glow.svg"
 
-# Eagle laser turret (lava theme) timing, in seconds.
-const EAGLE_CHARGE_TIME := 0.5
-const EAGLE_FIRE_TIME := 1.0
-const EAGLE_COOLDOWN_TIME := 5.0
-const EAGLE_BEAM_LEN := 1280.0
-
 var level_id := "cruise"
 var level_data: Dictionary = {}
 var theme: Dictionary = {}
@@ -47,15 +41,6 @@ var _light_time := 0.0
 var _lantern_lights: Array = []          # [{light, base, phase, speed}]
 var _lava_lights: Array[PointLight2D] = []
 var _player_shadow: Polygon2D
-
-# Eagle laser turret state.
-var _eagle: Sprite2D
-var _eagle_charge: Sprite2D
-var _eagle_beam: Node2D
-var _eagle_beam_area: Area2D
-var _eagle_state := "idle"
-var _eagle_timer := 0.0
-var _eagle_firing := false
 
 
 func _ready() -> void:
@@ -308,7 +293,6 @@ func _process(delta: float) -> void:
 	_update_weather(delta)
 	_update_lava(delta)
 	_update_lights(delta)
-	_update_eagle(delta)
 	if Input.is_action_just_pressed("pause"):
 		_toggle_pause()
 
@@ -366,7 +350,6 @@ func _build_lighting() -> void:
 		"pirate": _build_pirate_lanterns(cfg)
 		"lava":
 			_build_lava_lighting(cfg)
-			_build_laser_eagle()
 		"island": _build_island_lighting(cfg)
 
 
@@ -448,122 +431,6 @@ func _build_lava_lighting(cfg: Dictionary) -> void:
 		_lava_lights.append(light)
 		x += 500.0
 		i += 1
-
-
-## Robotic laser-eagle turret perched on the right. It cycles
-## cooldown -> charge -> fire and back; the beam is a bluish, self-lit hazard.
-func _build_laser_eagle() -> void:
-	_eagle = Sprite2D.new()
-	_eagle.texture = load("res://sprites/enemies/laser_eagle.svg")
-	_eagle.position = Vector2(2680, 340)
-	_eagle.flip_h = true  # beak faces left, toward the player's approach
-	add_child(_eagle)
-
-	var beak := _eagle.position + Vector2(-44, 8)
-
-	# Charge glow at the beak (hidden until charging).
-	_eagle_charge = Sprite2D.new()
-	_eagle_charge.texture = load("res://sprites/effects/laser_charge_glow.svg")
-	_eagle_charge.position = beak
-	_eagle_charge.visible = false
-	_eagle_charge.z_index = 5
-	add_child(_eagle_charge)
-
-	# Beam node centred on the horizontal beam line; children are local to it.
-	_eagle_beam = Node2D.new()
-	_eagle_beam.position = Vector2(beak.x - EAGLE_BEAM_LEN / 2.0, beak.y)
-	_eagle_beam.visible = false
-	add_child(_eagle_beam)
-
-	var beam_spr := Sprite2D.new()
-	beam_spr.texture = load("res://sprites/effects/laser_beam.svg")
-	# Source sprite is 256x32; stretch to the full beam length.
-	beam_spr.scale = Vector2(EAGLE_BEAM_LEN / 256.0, 0.9)
-	beam_spr.z_index = 4
-	_eagle_beam.add_child(beam_spr)
-
-	# Hazard area wired to the same `take_damage` path enemies use.
-	_eagle_beam_area = Area2D.new()
-	_eagle_beam_area.collision_mask = 1
-	_eagle_beam_area.monitoring = true
-	var shape := CollisionShape2D.new()
-	var box := RectangleShape2D.new()
-	box.size = Vector2(EAGLE_BEAM_LEN, 26)
-	shape.shape = box
-	_eagle_beam_area.add_child(shape)
-	_eagle_beam.add_child(_eagle_beam_area)
-
-	# Bluish self-illumination above and below the beam.
-	var beam_x := -EAGLE_BEAM_LEN / 2.0
-	while beam_x <= EAGLE_BEAM_LEN / 2.0:
-		var glow := _make_point_light(LIGHT_RADIAL, Color(0.45, 0.7, 1.0), 1.3, 0.45)
-		glow.position = Vector2(beam_x, 0)
-		_eagle_beam.add_child(glow)
-		beam_x += 256.0
-
-	# Start in cooldown so the first volley is delayed.
-	_eagle_state = "cooldown"
-	_eagle_timer = EAGLE_COOLDOWN_TIME
-
-
-func _update_eagle(_delta: float) -> void:
-	if _eagle == null:
-		return
-	_eagle_timer -= _delta
-	match _eagle_state:
-		"cooldown":
-			if _eagle_timer <= 0.0:
-				_start_eagle_charge()
-		"charge":
-			# Grow + pulse the charge glow as it winds up.
-			var t := 1.0 - clampf(_eagle_timer / EAGLE_CHARGE_TIME, 0.0, 1.0)
-			if _eagle_charge:
-				var s := lerpf(0.3, 1.4, t) + sin(_light_time * 30.0) * 0.1
-				_eagle_charge.scale = Vector2(s, s)
-			if _eagle_timer <= 0.0:
-				_start_eagle_fire()
-		"fire":
-			_damage_with_beam()
-			if _eagle_beam:
-				_eagle_beam.modulate.a = 0.85 + sin(_light_time * 40.0) * 0.15
-			if _eagle_timer <= 0.0:
-				_end_eagle_fire()
-
-
-func _start_eagle_charge() -> void:
-	_eagle_state = "charge"
-	_eagle_timer = EAGLE_CHARGE_TIME
-	if _eagle_charge:
-		_eagle_charge.visible = true
-		_eagle_charge.scale = Vector2(0.3, 0.3)
-	AudioManager.play_sfx("laser_charge")
-
-
-func _start_eagle_fire() -> void:
-	_eagle_state = "fire"
-	_eagle_timer = EAGLE_FIRE_TIME
-	_eagle_firing = true
-	if _eagle_charge:
-		_eagle_charge.visible = false
-	if _eagle_beam:
-		_eagle_beam.visible = true
-	AudioManager.play_sfx("laser")
-
-
-func _end_eagle_fire() -> void:
-	_eagle_state = "cooldown"
-	_eagle_timer = EAGLE_COOLDOWN_TIME
-	_eagle_firing = false
-	if _eagle_beam:
-		_eagle_beam.visible = false
-
-
-func _damage_with_beam() -> void:
-	if not _eagle_firing or _eagle_beam_area == null:
-		return
-	for body in _eagle_beam_area.get_overlapping_bodies():
-		if body.is_in_group("player") and body.has_method("take_damage"):
-			body.take_damage(1)
 
 
 ## Castaway Cove: a warm sun key light following the player plus simulated

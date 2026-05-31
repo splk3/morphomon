@@ -1,13 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="32" viewBox="0 0 256 32">
-  <!-- horizontal bluish energy BEAM segment; vertical glow falloff, uniform along X (tileable) -->
+  <!-- horizontal brilliant blue-white energy BEAM segment -->
   <defs>
     <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#2a6cff" stop-opacity="0"/>
-      <stop offset="25%" stop-color="#4aa8ff" stop-opacity="0.45"/>
-      <stop offset="42%" stop-color="#8fd6ff" stop-opacity="0.8"/>
+      <stop offset="15%" stop-color="#5aa8ff" stop-opacity="0.6"/>
+      <stop offset="30%" stop-color="#8fd6ff" stop-opacity="0.9"/>
+      <stop offset="45%" stop-color="#d4f0ff" stop-opacity="0.95"/>
       <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
-      <stop offset="58%" stop-color="#8fd6ff" stop-opacity="0.8"/>
-      <stop offset="75%" stop-color="#4aa8ff" stop-opacity="0.45"/>
+      <stop offset="55%" stop-color="#d4f0ff" stop-opacity="0.95"/>
+      <stop offset="70%" stop-color="#8fd6ff" stop-opacity="0.9"/>
+      <stop offset="85%" stop-color="#5aa8ff" stop-opacity="0.6"/>
       <stop offset="100%" stop-color="#2a6cff" stop-opacity="0"/>
     </linearGradient>
   </defs>
