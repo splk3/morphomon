@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- bluish-white CHARGE GLOW orb, transparent edges (additive-friendly) -->
+  <defs>
+    <radialGradient id="charge" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="18%" stop-color="#dff4ff" stop-opacity="0.95"/>
+      <stop offset="42%" stop-color="#8fd6ff" stop-opacity="0.7"/>
+      <stop offset="68%" stop-color="#4aa8ff" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#2a6cff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" fill="none"/>
+  <circle cx="32" cy="32" r="32" fill="url(#charge)"/>
+</svg>

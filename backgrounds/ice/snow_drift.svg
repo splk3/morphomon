@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <path d="M0 632 H90 V616 H220 V628 H365 V604 H520 V626 H690 V612 H850 V630 H1010 V608 H1165 V624 H1280 V720 H0 Z" fill="#edf8fb"/>
+  <path d="M0 676 H145 V660 H300 V674 H470 V650 H650 V670 H820 V656 H960 V676 H1120 V660 H1280 V720 H0 Z" fill="#dceef5"/>
+  <g fill="#ffffff" opacity="0.9">
+    <rect x="0" y="626" width="76" height="8"/>
+    <rect x="236" y="620" width="120" height="8"/>
+    <rect x="544" y="620" width="130" height="8"/>
+    <rect x="870" y="624" width="126" height="8"/>
+    <rect x="1190" y="626" width="90" height="8"/>
+  </g>
+  <g fill="#b6d0dd" opacity="0.7">
+    <rect x="120" y="690" width="90" height="6"/>
+    <rect x="408" y="680" width="112" height="6"/>
+    <rect x="740" y="692" width="96" height="6"/>
+    <rect x="1060" y="682" width="126" height="6"/>
+  </g>
+</svg>

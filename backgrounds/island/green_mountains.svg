@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <!-- distant GREEN mountains with hazy atmospheric perspective (transparent base) -->
+  <rect width="1280" height="720" fill="none"/>
+  <!-- farthest ridge: pale hazy green -->
+  <g fill="#7db98a" opacity="0.6">
+    <polygon points="0,540 180,400 360,540"/>
+    <polygon points="300,540 540,360 800,540"/>
+    <polygon points="720,540 950,380 1180,540"/>
+    <polygon points="1080,540 1280,410 1280,540"/>
+  </g>
+  <!-- mid ridge: medium green -->
+  <g fill="#4f9e5f">
+    <polygon points="0,560 140,440 300,560"/>
+    <polygon points="240,560 470,330 720,560"/>
+    <polygon points="640,560 880,360 1120,560"/>
+    <polygon points="1020,560 1220,430 1280,500 1280,560"/>
+  </g>
+  <!-- shadow flanks -->
+  <g fill="#3c8049" opacity="0.7">
+    <polygon points="470,330 720,560 560,470 520,520 470,400"/>
+    <polygon points="880,360 1120,560 970,470 930,515 885,420"/>
+  </g>
+  <!-- sunlit highlights near ridgelines -->
+  <g fill="#6fc079" opacity="0.8">
+    <polygon points="470,330 400,430 455,408 478,452 520,408"/>
+    <polygon points="880,360 820,448 870,430 894,470 930,432"/>
+  </g>
+  <!-- atmospheric haze band -->
+  <rect x="0" y="470" width="1280" height="110" fill="#cfe8d4" opacity="0.3"/>
+</svg>

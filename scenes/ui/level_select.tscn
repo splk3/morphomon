@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmorpholevelsel1"]
+
+[ext_resource type="Script" path="res://scripts/ui/level_select.gd" id="1_ls"]
+
+[node name="LevelSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_ls")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.06, 0.07, 0.14, 1)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 18.0
+offset_right = 200.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 40
+text = "SELECT YOUR STAGE"
+horizontal_alignment = 1
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 60.0
+offset_bottom = -70.0
+
+[node name="Grid" type="GridContainer" parent="Center"]
+layout_mode = 2
+theme_override_constants/h_separation = 18
+theme_override_constants/v_separation = 18
+columns = 3
+
+[node name="Footer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="MenuButton" type="Button" parent="Footer"]
+custom_minimum_size = Vector2(220, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Main Menu"
