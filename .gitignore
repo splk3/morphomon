@@ -6,6 +6,7 @@
 .import/
 export.cfg
 export_credentials.cfg
+godot-executables/
 
 # Imported translations (automatically generated from CSV files)
 *.translation
@@ -17,3 +18,4 @@ mono_crash.*.json
 
 # Developer addons
 addons/
+
