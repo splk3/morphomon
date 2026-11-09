@@ -21,13 +21,20 @@ godot --headless --import --quit
 ## 📂 Project Structure
 
 - `scenes/`: Contains `.tscn` files.
-  - `main_menu.tscn`: The entry point of the game.
-  - `player.tscn`: The player character scene.
-  - `level1.tscn`: The first playable level.
+  - `main_menu.tscn`: Animated entry point (parallax beach/sunset + racing Morphomon).
+  - `player.tscn`: The player character scene (form-driven controller).
+  - `ui/`: HUD, pause menu, settings menu, level select, credits.
+  - `levels/`: Data-driven `base_level.tscn` (all themed levels) and `level_boss.tscn`.
+  - `entities/`: `projectile.tscn`, `enemy.tscn`, `rescue_animal.tscn`.
 - `scripts/`: GDScript (`.gd`) logic files.
-- `sprites/`: Player animations and character sprites.
-- `backgrounds/`: Multi-layer parallax background assets.
-- `tilesets/`: Ground and platform tiles.
+  - `autoload/`: `game_state.gd` (progression/save), `settings.gd`, `audio_manager.gd` — registered as autoloads.
+  - `levels/`: `base_level.gd`, `level_boss.gd`, `level_themes.gd`.
+  - `forms/`: `morph_forms.gd` — per-form movement/attack/ability data.
+  - `entities/`, `ui/`: entity and UI logic.
+- `sprites/`: Player, forms, animals, enemies, items, boss sprites.
+- `backgrounds/`: Multi-layer parallax assets, organized per theme.
+- `assets/music/`, `assets/sfx/`: Procedurally generated WAV audio.
+- `tools/`: `generate_music.py`, `generate_sfx.py` — reproducible audio pipeline (Python + numpy).
 - `.github/workflows/`: GitHub Actions for automated testing/validation.
 
 ## 🛠 Development Conventions
@@ -50,7 +57,14 @@ godot --headless --import --quit
 - The `textures/canvas_textures/default_texture_filter=0` setting in `project.godot` ensures pixel-perfect rendering for SVG/Pixel art.
 
 ## 🎮 Input Actions
-Defined in `project.godot`:
-- `move_left`: Left Arrow, A.
-- `move_right`: Right Arrow, D.
-- `jump`: Space, W, Up Arrow.
+Defined in `project.godot` (all support keyboard + gamepad, remappable in Settings → Controls):
+- `move_left`, `move_right`, `move_up`, `move_down`
+- `jump`: Space, W, Up Arrow / gamepad A
+- `attack`: J / gamepad X
+- `ability`: K / gamepad B (form special ability)
+- `cycle_form`: Q / gamepad Y, RB
+- `pause`: Esc / gamepad Start
+
+## 🔊 Audio
+- Music and SFX are generated procedurally via `tools/generate_music.py` and `tools/generate_sfx.py` (Python + numpy) into `assets/music/` and `assets/sfx/`.
+- `AudioManager` autoload plays looping music on a `Music` bus and pooled SFX on an `SFX` bus (`default_bus_layout.tres`); volumes are driven by `Settings`.

@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmorphocredits01"]
+
+[ext_resource type="Script" path="res://scripts/ui/credits.gd" id="1_cr"]
+
+[node name="Credits" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_cr")
+
+[node name="Sky" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Road" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand_mode = 1
+stretch_mode = 6
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Roll" type="Label" parent="."]
+custom_minimum_size = Vector2(1280, 1300)
+offset_left = 0.0
+offset_top = 720.0
+offset_right = 1280.0
+offset_bottom = 2020.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.05, 0.15, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/line_spacing = 10
+theme_override_font_sizes/font_size = 30
+text = "MORPHOMON
+
+A shapeshifting adventure
+
+— STARRING —
+Morphomon
+
+— FORMS —
+Panther · Mammoth · Eagle · Monkey
+
+— STAGES —
+Cruise Ship · Frostbite Peaks
+Magma Core · Castaway Cove
+Tangle Jungle · Dead Tide Galleon
+
+— FINAL BOSS —
+Dr. Morphous
+
+— MADE WITH —
+Godot Engine 4.5
+
+Chiptune & SFX generated procedurally
+Pixel art assets crafted by the agent fleet
+
+Thanks for playing!
+
+See you on the next adventure..."
+horizontal_alignment = 1
+vertical_alignment = 0
+autowrap_mode = 2

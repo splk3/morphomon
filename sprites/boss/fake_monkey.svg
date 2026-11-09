@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <!-- boss fake monkey: villain palette -->
+  <rect x="22" y="24" width="22" height="22" fill="#8a8f99" stroke="#07080a" stroke-width="4"/>
+  <rect x="26" y="38" width="14" height="3" fill="#5a0d16"/>
+  <rect x="28" y="14" width="22" height="18" fill="#8a8f99" stroke="#07080a" stroke-width="4"/>
+  <rect x="32" y="21" width="9" height="5" fill="#d6172f"/>
+  <rect x="44" y="21" width="3" height="3" fill="#ffb000"/>
+  <rect x="48" y="20" width="7" height="6" fill="#8a8f99" stroke="#07080a" stroke-width="2"/>
+  <rect x="14" y="30" width="8" height="20" fill="#6f737a" stroke="#07080a" stroke-width="3"/>
+  <rect x="44" y="34" width="14" height="7" fill="#6f737a" stroke="#07080a" stroke-width="3"/>
+  <rect x="24" y="46" width="6" height="10" fill="#b51224" stroke="#07080a" stroke-width="2"/>
+  <rect x="38" y="46" width="6" height="10" fill="#b51224" stroke="#07080a" stroke-width="2"/>
+  <path d="M23 38 L12 42 L9 36" fill="none" stroke="#07080a" stroke-width="4"/>
+</svg>

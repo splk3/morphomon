@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <rect width="1280" height="720" fill="none"/>
+  <g fill="#18223d">
+    <rect x="26" y="360" width="38" height="360"/><polygon points="45,342 0,416 104,376 180,410"/><polygon points="45,342 0,310 114,330 182,286"/><polygon points="45,342 12,232 68,326 126,230"/>
+    <rect x="1216" y="360" width="38" height="360"/><polygon points="1235,342 1100,410 1176,376 1280,416"/><polygon points="1235,342 1098,286 1166,330 1280,310"/><polygon points="1235,342 1154,230 1212,326 1268,232"/>
+    <rect x="170" y="430" width="24" height="290"/><polygon points="182,414 112,464 184,444 250,466"/><polygon points="182,414 130,370 190,422 238,376"/>
+    <rect x="1086" y="430" width="24" height="290"/><polygon points="1098,414 1030,466 1096,444 1168,464"/><polygon points="1098,414 1042,376 1090,422 1150,370"/>
+    <rect x="330" y="496" width="16" height="224"/><polygon points="338,484 292,520 338,506 386,522"/><polygon points="338,484 304,454 344,490 376,458"/>
+    <rect x="934" y="496" width="16" height="224"/><polygon points="942,484 894,522 942,506 988,520"/><polygon points="942,484 904,458 936,490 976,454"/>
+    <rect x="470" y="540" width="10" height="180"/><polygon points="475,532 444,556 476,546 508,556"/><polygon points="475,532 452,514 480,536 500,514"/>
+    <rect x="800" y="540" width="10" height="180"/><polygon points="805,532 772,556 804,546 836,556"/><polygon points="805,532 780,514 800,536 828,514"/>
+  </g>
+
+</svg>

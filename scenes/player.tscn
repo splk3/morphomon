@@ -78,3 +78,7 @@ shape = SubResource("RectangleShape2D_1")
 libraries = {
 "": SubResource("AnimationLibrary_1")
 }
+
+[node name="DashJet" type="CPUParticles2D" parent="."]
+emitting = false
+one_shot = true

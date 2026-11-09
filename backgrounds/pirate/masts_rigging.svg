@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <rect width="1280" height="720" fill="none"/>
+  <g fill="#2a1b16"><rect x="188" y="0" width="24" height="430"/><rect x="636" y="0" width="28" height="470"/><rect x="1058" y="0" width="22" height="390"/><rect x="0" y="0" width="1280" height="18"/></g>
+  <g fill="#d6c4a0" opacity="0.9"><path d="M212 70 h220 v188 h-220z"/><path d="M664 50 h260 v230 h-260z"/><path d="M842 300 h216 v112 h-216z"/><path d="M1080 88 h170 v168 h-170z"/></g>
+  <g fill="#8b7356" opacity="0.8"><rect x="212" y="150" width="220" height="18"/><rect x="664" y="156" width="260" height="20"/><rect x="1080" y="162" width="170" height="18"/></g>
+  <g stroke="#1b1210" stroke-width="5" opacity="0.9"><path d="M0 22 L636 350"/><path d="M1280 20 L664 360"/><path d="M200 0 L40 330"/><path d="M650 0 L1030 380"/><path d="M1070 0 L1260 332"/><path d="M190 430 L1080 0"/></g>
+  <g fill="#1b1210"><rect x="128" y="100" width="156" height="10"/><rect x="548" y="78" width="252" height="10"/><rect x="996" y="112" width="190" height="10"/></g>
+</svg>

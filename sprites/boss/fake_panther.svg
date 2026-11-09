@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <!-- boss fake panther: villain palette (gray plate, red panels, amber eye) -->
+  <path d="M14 35 L7 28 L5 32 L12 41" fill="none" stroke="#07080a" stroke-width="4"/>
+  <rect x="14" y="34" width="30" height="12" fill="#8a8f99" stroke="#07080a" stroke-width="4"/>
+  <rect x="18" y="37" width="22" height="3" fill="#d6172f"/>
+  <rect x="22" y="40" width="4" height="3" fill="#5a0d16"/>
+  <rect x="32" y="40" width="4" height="3" fill="#5a0d16"/>
+  <rect x="40" y="28" width="14" height="12" fill="#8a8f99" stroke="#07080a" stroke-width="4"/>
+  <polygon points="43,27 47,20 50,28" fill="#d6172f" stroke="#07080a" stroke-width="2"/>
+  <rect x="48" y="31" width="4" height="4" fill="#ffb000"/>
+  <rect x="42" y="36" width="7" height="2" fill="#6f737a"/>
+  <rect x="8" y="38" width="10" height="5" fill="#8a8f99" stroke="#07080a" stroke-width="3"/>
+  <rect x="18" y="45" width="5" height="10" fill="#6f737a" stroke="#07080a" stroke-width="3"/>
+  <rect x="34" y="45" width="5" height="10" fill="#6f737a" stroke="#07080a" stroke-width="3"/>
+  <rect x="19" y="48" width="3" height="2" fill="#07080a"/>
+  <rect x="35" y="48" width="3" height="2" fill="#07080a"/>
+  <rect x="20" y="55" width="7" height="3" fill="#d6172f"/>
+  <rect x="36" y="55" width="7" height="3" fill="#d6172f"/>
+</svg>

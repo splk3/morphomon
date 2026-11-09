@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- dash thruster flame/jet puff, orange/yellow with transparent edges -->
+  <defs>
+    <radialGradient id="flameOuter" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff8a1e" stop-opacity="0.9"/>
+      <stop offset="55%" stop-color="#ff6b1a" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ff4b1f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="flameCore" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff3c2" stop-opacity="1"/>
+      <stop offset="50%" stop-color="#ffd15a" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ffb237" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="48" height="48" fill="none"/>
+  <!-- outer flame puff -->
+  <ellipse cx="24" cy="24" rx="24" ry="16" fill="url(#flameOuter)"/>
+  <!-- hot core -->
+  <ellipse cx="24" cy="24" rx="13" ry="9" fill="url(#flameCore)"/>
+</svg>

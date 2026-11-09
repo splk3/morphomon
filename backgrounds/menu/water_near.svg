@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <rect width="1280" height="720" fill="none"/>
+  <!-- Bold near-shore swell: the fastest, nearest water band. -->
+  <g fill="#6fd3d0" opacity="0.85">
+    <rect x="0" y="470" width="220" height="16"/>
+    <rect x="300" y="478" width="240" height="16"/>
+    <rect x="640" y="468" width="260" height="16"/>
+    <rect x="980" y="480" width="300" height="16"/>
+  </g>
+  <g fill="#eafffb" opacity="0.9">
+    <rect x="60" y="466" width="140" height="6"/>
+    <rect x="360" y="474" width="170" height="6"/>
+    <rect x="700" y="464" width="180" height="6"/>
+    <rect x="1040" y="476" width="180" height="6"/>
+  </g>
+</svg>

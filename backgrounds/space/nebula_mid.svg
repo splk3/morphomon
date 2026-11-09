@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <rect width="1280" height="720" fill="none"/>
+  <g opacity="0.45">
+    <path d="M0 220 h140 v-40 h180 v60 h160 v-44 h170 v52 h160 v-36 h170 v54 h150 v260 h-1130z" fill="#4d4f9e"/>
+    <path d="M0 320 h160 v-36 h190 v52 h180 v-34 h190 v44 h190 v-28 h170 v46 h130 v220 h-1210z" fill="#7046a8"/>
+    <path d="M0 410 h200 v-30 h200 v38 h210 v-26 h210 v32 h210 v-24 h180 v30 h70 v190 h-1280z" fill="#3e6bb0"/>
+  </g>
+</svg>

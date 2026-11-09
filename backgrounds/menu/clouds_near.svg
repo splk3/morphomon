@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" shape-rendering="crispEdges">
+  <rect width="1280" height="720" fill="none"/>
+  <!-- Big, bold, low clouds: the fastest cloud band (nearest the viewer). -->
+  <g fill="#fff3d4" opacity="0.92">
+    <rect x="180" y="208" width="220" height="40"/>
+    <rect x="232" y="176" width="150" height="44"/>
+    <rect x="330" y="196" width="150" height="40"/>
+  </g>
+  <g fill="#ffe2ab" opacity="0.92">
+    <rect x="780" y="226" width="240" height="42"/>
+    <rect x="838" y="192" width="160" height="46"/>
+    <rect x="958" y="214" width="150" height="40"/>
+  </g>
+</svg>
